@@ -42,7 +42,7 @@ const addPost = async (req, res) => {
 const deletePost = async (req, res) => {
 
     //Check if the ID is Valid
-    if(!mongoose, Types.ObjectId.isValid(req.params.id)){
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
         return res.status(400).json({ error: 'Invalid ID' });
     }
 
@@ -59,7 +59,7 @@ const deletePost = async (req, res) => {
     }
 
     try{
-        await post.remove();
+        await post.deleteOne();
         res.status(200).json({ success: 'Post Deleted' });
     }
     catch(error){

@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Post from '../models/PostModel.js';
 import User from '../models/UserModel.js';
 import LeaseApplication from '../models/LeaseApplicationModel.js';
 
@@ -62,71 +61,90 @@ const addApplication = async (req, res) => {
     
 }
 
-/**********************************************Delete Post *******************************************/
-// const deleteApplication = async (req, res) => {
+/**********************************************Delete Application *******************************************/
+const deleteApplication = async (req, res) => {
 
-//     //Check if the ID is Valid
-//     if(!mongoose, Types.ObjectId.isValid(req.params.id)){
-//         return res.status(400).json({ error: 'Invalid ID' });
-//     }
+    //Check if the ID is Valid
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
+        return res.status(400).json({ error: 'Invalid ID' });
+    }
 
-//     //Check if the Post Exists
-//     const post = await Post.findById(req.params.id);
-//     if(!post){
-//         return res.status(404).json({ error: 'Post Not Found' });
-//     }
+    //Check if the Application Exists
+    const application = await LeaseApplication.findById(req.params.id);
+    if(!application){
+        return res.status(404).json({ error: 'Application Not Found' });
+    }
 
-//     //Check if the User is the Owner of the Post
-//     const user = await User.findById(req.user._id);
-//     if(!post.user.equals(user._id)){
-//         return res.status(401).json({ error: 'Unauthorized' });
-//     }
+    console.log(application);
 
-//     try{
-//         await post.remove();
-//         res.status(200).json({ success: 'Post Deleted' });
-//     }
-//     catch(error){
-//         console.log(error);
-//         res.status(500).json({ error: error.message });
-//     }
-// }
+    //Check if the User is the Owner of the Application
+    const user = await User.findById(req.user._id);
+    if(!application.agent.equals(user._id)){
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
 
-// /**********************************************Update Post *******************************************/
-// const updateApplication = async (req, res) => {
+    try{
+        await application.deleteOne();
+        res.status(200).json({ success: 'Application Deleted' });
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+}
 
-//     //Grab Data from the Request Body
-//     const {title, body} = req.body;
+/**********************************************Update Application *******************************************/
+const updateApplication = async (req, res) => {
 
-//     //Check the fields are not empty
-//     if(!title || !body){
-//         return res.status(400).json({ msg: 'All fields are required' });
-//     }
+    //Check if the ID is Valid
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
+        return res.status(400).json({ error: 'Invalid ID' });
+    }
 
-//     //Check if the ID is Valid
-//     if(!mongoose, Types.ObjectId.isValid(req.params.id)){
-//         return res.status(400).json({ error: 'Invalid ID' });
-//     }
+    //Grab Data from the Request Body
+    const {location, userEmails} = req.body;
+    
+    //Check the fields are not empty
+    if(!location || !userEmails){
+        return res.status(400).json({ msg: 'All fields are required' });
+    }
 
-//     //Check if the Post Exists
-//     const post = await Post.findById(req.params.id);
-//     if(!post){
-//         return res.status(404).json({ error: 'Post Not Found' });
-//     }
+    //Check if the Application Exists
+    const application = await LeaseApplication.findById(req.params.id);
+    if(!application){
+        return res.status(404).json({ error: 'Application Not Found' });
+    }
 
-//     //Check if the User is the Owner of the Post
-//     const user = await User.findById(req.user._id);
-//     if(!post.user.equals(user._id)){
-//         return res.status(401).json({ error: 'Unauthorized' });
-//     }
+    console.log(application);
 
-//     try{
-//         await post.updateOne({title, body})
-//         res.status(200).json({ success: 'Post Updated' });
-//     }
-//     catch(error){
-//         res.status(500).json({ error: error.message });
-//     }
-// }
+    //Check if the User is the Owner of the Application
+    const user = await User.findById(req.user._id);
+    if(!application.agent.equals(user._id)){
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
 
-export {getApplications, addApplication};
+    // Find all users by their emails
+    const users = await User.find({ email: { $in: userEmails } });
+    if (users.length !== userEmails.length) {
+        return res.status(404).json({ msg: 'One or more users not found' });
+    }
+
+    //check if all users are clients
+    const allUsers = users.every(user => user.role === 'Client');
+    if(!allUsers){
+        return res.status(400).json({ error: 'All users must be clients' });
+    }
+
+    // Extract the ObjectIds of the users
+    const userIds = users.map(user => user._id);
+
+    try{
+        await application.updateOne({user, location, users: userIds})
+        res.status(200).json({ success: 'Application Updated' });
+    }
+    catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}
+
+export {getApplications, addApplication, deleteApplication, updateApplication};

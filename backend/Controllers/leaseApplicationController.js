@@ -115,8 +115,6 @@ const updateApplication = async (req, res) => {
         return res.status(404).json({ error: 'Application Not Found' });
     }
 
-    console.log(application);
-
     //Check if the User is the Owner of the Application
     const user = await User.findById(req.user._id);
     if(!application.agent.equals(user._id)){

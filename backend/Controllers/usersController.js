@@ -11,10 +11,10 @@ const createToken = (_id) => {
 /*****************************************Register User *****************************************/
 const registerUser = async (req, res) => {
     //Grab Data from the Request Body
-    const {email, password} = req.body;
+    const {email, password, role} = req.body;
 
     //Check the fields are not empty
-    if(!email || !password){
+    if(!email || !password || !role){
         return res.status(400).json({ msg: 'All fields are required' });
     }
 
@@ -30,11 +30,11 @@ const registerUser = async (req, res) => {
 
     try{
         //Register the User
-        const user = await User.create({email, password: hashedPassword});
+        const user = await User.create({email, password: hashedPassword, role});
         //Create a JWT Token
         const token = createToken(user._id);
         //Send the Token in the Response
-        res.status(200).json({ email, token }); 
+        res.status(200).json({ email, token, role }); 
     }
     catch(error){
         res.status(500).json({ error: error.message });

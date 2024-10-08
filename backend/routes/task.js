@@ -1,8 +1,7 @@
 /* Routes for assigning a task
 to clients and viewing tasks*/
-
-const express = require('express');
-const Task = require('../models/Task');
+import express from 'express';
+const Task = require('../models/Task').default;
 
 const router = express.Router();
 

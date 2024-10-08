@@ -7,6 +7,11 @@ import mongoose from 'mongoose';
 
 const app = express();
 
+const uploadRoutes = require('./routes/upload'); 
+
+app.use('/api', uploadRoutes); 
+
+
 app.use(express.json());
 
 app.use('/api/posts', postRoutes);

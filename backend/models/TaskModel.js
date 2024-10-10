@@ -1,4 +1,3 @@
-// This model defines the structure of tasks
 import mongoose from 'mongoose';
 
 const TaskSchema = new mongoose.Schema({
@@ -6,7 +5,11 @@ const TaskSchema = new mongoose.Schema({
     description: { type: String},
     type: { type: String, enum: ['file', 'form'], required: true},
     status: { type: String, enum: ['pending', 'completed'], default: 'pending'},
-    assigned_to: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
-});
+    assigned_to: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    leaseApplication: { type: mongoose.Schema.Types.ObjectId, ref: 'LeaseApplication'},
+    fileUrl: { type: String }
+}, { timestamps: true });
 
-module.exports = mongoose.model('Task', TaskSchema);
+const Task = mongoose.model('Task', TaskSchema);
+
+export default Task;

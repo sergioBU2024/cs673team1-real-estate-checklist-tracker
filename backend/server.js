@@ -2,14 +2,12 @@ import express from 'express';
 import { postRoutes } from './routes/postRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
 import { leaseApplicationRoutes } from './routes/leaseApplicationRoutes.js';
-import { taskroutes } from './routes/task.js';
+import { taskroutes } from './routes/taskRoutes.js';
 import mongoose from 'mongoose';
 
-const app = express();
+const app = express(); 
 
-const uploadRoutes = require('./routes/upload'); 
 
-app.use('/api', uploadRoutes); 
 
 
 app.use(express.json());

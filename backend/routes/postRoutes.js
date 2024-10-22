@@ -1,5 +1,6 @@
 import express from 'express';
-import { addPost, getPosts, deletePost, updatePost } from '../Controllers/PostsController.js';
+import { addPost, getPosts, deletePost, updatePost } from '../Controllers/postsController.js';
+import auth from '../Middlewares/auth.js';
 
 const router = express.Router();
 
@@ -8,12 +9,12 @@ const router = express.Router();
 router.get('/', getPosts);
 
 //Add a new Post Route
-router.post('/', addPost);
+router.post('/', auth, addPost);
 
 //Delete a Post Route
-router.delete('/:id', deletePost);
+router.delete('/:id', auth, deletePost);
 
 //Uodate a Post Route
-router.put('/:id', updatePost);
+router.put('/:id', auth, updatePost);
 
 export {router as postRoutes};

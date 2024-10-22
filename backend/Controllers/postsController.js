@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 import Post from '../models/PostModel.js';
+import User from '../models/UserModel.js';
 
 /**********************************************Get All Posts *********************************************/
 const getPosts = async (req, res) => {
     try{
-        const posts = await Post.find({ createdAt: "desc"});
+        const posts = await Post.find();
         res.status(200).json(posts);
     }
     catch(error){
@@ -24,22 +25,24 @@ const addPost = async (req, res) => {
         return res.status(400).json({ msg: 'All fields are required' });
     }
 
+    //Grab the authenticated user from the request body
+    const user = await User.findById(req.user._id);
+
     try{
-        const post = await Post.create({title, body});
+        const post = await Post.create({user: user._id, title, body});
         res.status(200).json({ success: 'Post Created.', post });
     }
     catch(error){
-        console.log(err);
         res.status(500).json({ error: error.message });
     }
     
 }
 
-/**********************************************Create New Post *******************************************/
+/**********************************************Delete Post *******************************************/
 const deletePost = async (req, res) => {
 
     //Check if the ID is Valid
-    if(!mongoose, Types.ObjectId.isValid(req.params.id)){
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
         return res.status(400).json({ error: 'Invalid ID' });
     }
 
@@ -49,8 +52,14 @@ const deletePost = async (req, res) => {
         return res.status(404).json({ error: 'Post Not Found' });
     }
 
+    //Check if the User is the Owner of the Post
+    const user = await User.findById(req.user._id);
+    if(!post.user.equals(user._id)){
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     try{
-        await post.remove();
+        await post.deleteOne();
         res.status(200).json({ success: 'Post Deleted' });
     }
     catch(error){
@@ -79,6 +88,12 @@ const updatePost = async (req, res) => {
     const post = await Post.findById(req.params.id);
     if(!post){
         return res.status(404).json({ error: 'Post Not Found' });
+    }
+
+    //Check if the User is the Owner of the Post
+    const user = await User.findById(req.user._id);
+    if(!post.user.equals(user._id)){
+        return res.status(401).json({ error: 'Unauthorized' });
     }
 
     try{

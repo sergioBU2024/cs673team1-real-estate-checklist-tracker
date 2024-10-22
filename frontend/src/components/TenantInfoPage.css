@@ -1,0 +1,158 @@
+/* Header section */
+.tenant-info-page-container {
+  justify-content: center;
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #7E8D85; /* Match background color */
+  border: none;
+  cursor: pointer;
+  padding: 8px 40px; /* Adjust padding for better spacing */
+  color: #000;
+  width: 100%; /* Ensure it stretches across the full width */
+  box-sizing: border-box; /* Include padding and border in the width */
+  position: relative; /* Necessary for dropdown positioning */
+  font-size: 16px; /* Adjust font size for better readability */
+}
+
+.logo-header {
+  display: flex;
+  align-items: center;
+}
+
+.logo-header img {
+  width: 50px; /* Adjust size as needed */
+  margin-right: 10px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-text h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  color: black;
+}
+
+.logo-text p {
+  font-size: 12px;
+  color: black;
+  margin: 0;
+  font-style: italic; /* Optional: add italic style */
+}
+
+/* Welcome text and dropdown */
+.welcome-text {
+  text-align: right;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Aligns the text and dropdown to the right */
+  font-size: 16px;
+}
+
+.greeting {
+  margin-right: 10px;
+}
+
+/* Dropdown arrow and menu styling */
+.user-dropdown {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.username {
+  margin-right: 5px;
+}
+
+.arrow {
+  display: inline-block;
+  margin-left: 5px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid black;
+}
+
+.arrow.open {
+  transform: rotate(180deg); /* Rotate arrow when dropdown is open */
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 150px;
+  z-index: 10;
+}
+
+.dropdown-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  color: black;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f1f1f1;
+}
+
+.tenant-documents {
+  margin-top: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.action-buttons button {
+  padding: 10px 20px;
+  background-color: #b0b8b6;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #000;
+}
+
+.action-buttons button:hover {
+  background-color: #9da3a1;
+}
+
+/* Styling for the 'Edit' button */
+.tenant-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #000;
+  text-decoration: underline;
+  margin-left: auto; /* Moves the button to the right */
+}

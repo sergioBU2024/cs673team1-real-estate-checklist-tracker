@@ -6,7 +6,7 @@
 }
 
 .tenant-name:hover {
-  color: darkblue; /* Change color on hover for visual feedback */
+  color: blue; /* Change color on hover for visual feedback */
 }
 
 /* Header section */
@@ -67,10 +67,13 @@
   flex-direction: column;
   align-items: flex-end;
   font-size: 16px;
+  color: black;
+
 }
 
 .greeting {
   margin-right: 10px;
+  
 }
 
 /* Dropdown arrow and menu styling */

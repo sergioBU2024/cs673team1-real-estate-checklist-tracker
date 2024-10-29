@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Settings.css'; // Add corresponding CSS for styling
+import './Settings.css';
 import { useNavigate } from 'react-router-dom';
 
 function Settings() {
@@ -13,7 +13,7 @@ function Settings() {
   const navigate = useNavigate();
 
   const handleSave = () => {
-    // Implement saving logic here (e.g., sending data to a backend)
+    // Logic to save data
     console.log({
       firstName,
       lastName,
@@ -22,11 +22,11 @@ function Settings() {
       officeLocation,
       password,
     });
-    navigate('/dashboard'); // After saving, return to the dashboard
+    navigate(-1); // Go back to the previous page after saving
   };
 
   const handleClose = () => {
-    navigate('/dashboard'); // Close settings and return to the dashboard
+    navigate(-1); // Go back to the previous page without saving
   };
 
   return (

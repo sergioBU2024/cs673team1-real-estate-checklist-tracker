@@ -31,11 +31,7 @@ function AgentDashboard() {
     setCurrentTenants(tenants.filter(tenant => tenant.status === 'Compliant'));
   }, [tenants]);
 
-  const handleLogout = () => {
-    // Remove any user-related data from local storage
-    localStorage.removeItem('token');
-    navigate('/');
-  };
+  const handleLogout = () => navigate('/');
   const handleSettings = () => navigate('/settings');
 
   // Updated function to navigate to AgentClientPage with tenant data

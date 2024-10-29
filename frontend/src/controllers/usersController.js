@@ -1,15 +1,15 @@
 /*******************************Login User **************************************/
-const loginUser = async (email, password) => {
-    if(!email || !password){
+const loginUser = async (email, password, role) => {
+    if(!email || !password || !role){
         throw Error('All fields are required');
     }
 
-    const res = await fetch('/api/users/login', {
+    const res = await fetch("/api/users/login", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email, password})
+        body: JSON.stringify({email, password, role})
     });
 
     const data = await res.json();
@@ -18,7 +18,7 @@ const loginUser = async (email, password) => {
         throw Error(data.error);
     }
 
-    console.log(data);
+    return data;
 }
 
 export { loginUser };

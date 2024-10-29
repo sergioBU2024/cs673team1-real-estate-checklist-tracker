@@ -45,10 +45,10 @@ const registerUser = async (req, res) => {
 /*****************************************Login User *****************************************/
 const loginUser = async (req, res) => {
     //Grab Data from the Request Body
-    const {email, password} = req.body;
+    const {email, password, role} = req.body;
 
     //Check the fields are not empty
-    if(!email || !password){
+    if(!email || !password || !role){
         return res.status(400).json({ msg: 'All fields are required' });
     }
 
@@ -68,7 +68,7 @@ const loginUser = async (req, res) => {
         //Create a JWT Token
         const token = createToken(user._id);
 
-        res.status(200).json({ email, token }); 
+        res.status(200).json({ email, token, role }); 
     }
     catch(error){
         console.log(err);

@@ -1,7 +1,7 @@
 /* General container */
 .login-container {
     display: flex;
-    height: 100vh;
+    height: 120vh;
   }
   
   /* Left side with logo */

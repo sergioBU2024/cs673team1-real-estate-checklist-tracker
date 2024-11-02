@@ -3,21 +3,38 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 function Login() {
-  const [role, setRole] = useState('client');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleRoleChange = (e) => {
-    setRole(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (role === 'agent') {
-      navigate('/dashboard');
-    } else if (role === 'client') {
-      navigate('/client');
-    } else if (role === 'broker') {
-      navigate('/broker-home');
+    const loginData = { email, password };
+
+    try {
+      const response = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginData)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const userRole = data.role; // assuming the backend sends back the user's role
+
+        // Redirect based on the role from the backend response
+        if (userRole === 'agent') {
+          navigate('/dashboard');
+        } else if (userRole === 'client') {
+          navigate('/client');
+        } else if (userRole === 'broker') {
+          navigate('/broker-home');
+        }
+      } else {
+        alert("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -32,26 +49,28 @@ function Login() {
         <h1>Login</h1>
         <p>Don’t have an account yet? <a href="/signup">Sign Up</a></p>
         <form onSubmit={handleSubmit}>
-          {/* Role selection dropdown */}
-          <div className="form-group">
-            <label>Select Role</label>
-            <select name="userRole" value={role} onChange={handleRoleChange}>
-              <option value="client">Client</option>
-              <option value="broker">Broker</option>
-              <option value="agent">Agent</option>
-            </select>
-          </div>
-
           {/* Email field */}
           <div className="form-group">
             <label>Email Address</label>
-            <input type="email" placeholder="yourname@bu.edu" required />
+            <input
+              type="email"
+              placeholder="yourname@bu.edu"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
 
           {/* Password field */}
           <div className="form-group">
             <label>Password</label>
-            <input type="password" placeholder="**********" required />
+            <input
+              type="password"
+              placeholder="**********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
             <a href="#" className="forgot-password">Forgot Password?</a>
           </div>
 

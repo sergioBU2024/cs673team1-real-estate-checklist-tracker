@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { loginUser } from '../controllers/usersController';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -12,27 +13,19 @@ function Login() {
     const loginData = { email, password };
 
     try {
-      const response = await fetch('/api/users/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(loginData)
-      });
+        const data = await loginUser(loginData.email, loginData.password);
+        console.log(data);
 
-      if (response.ok) {
-        const data = await response.json();
-        const userRole = data.role; // assuming the backend sends back the user's role
+        const userRole = data.role;
 
-        // Redirect based on the role from the backend response
-        if (userRole === 'agent') {
+        if (userRole === 'Agent') {
           navigate('/dashboard');
-        } else if (userRole === 'client') {
+        } else if (userRole === 'Client') {
           navigate('/client');
-        } else if (userRole === 'broker') {
+        } else if (userRole === 'Broker') {
           navigate('/broker-home');
         }
-      } else {
-        alert("Login failed. Please check your credentials.");
-      }
+
     } catch (error) {
       console.error("Error:", error);
     }

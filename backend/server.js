@@ -2,6 +2,7 @@ import express from 'express';
 import { userRoutes } from './routes/userRoutes.js';
 import { leaseApplicationRoutes } from './routes/leaseApplicationRoutes.js';
 import { taskroutes } from './routes/taskRoutes.js';
+import cors from 'cors';
 import mongoose from 'mongoose';
 
 const app = express(); 
@@ -10,6 +11,7 @@ const app = express();
 
 
 app.use(express.json());
+app.use(cors());
 
 app.use('/api/users', userRoutes);
 app.use('/api/applications', leaseApplicationRoutes);

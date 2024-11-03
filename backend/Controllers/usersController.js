@@ -45,10 +45,10 @@ const registerUser = async (req, res) => {
 /*****************************************Login User *****************************************/
 const loginUser = async (req, res) => {
     //Grab Data from the Request Body
-    const {email, password, role} = req.body;
+    const {email, password} = req.body;
 
     //Check the fields are not empty
-    if(!email || !password || !role){
+    if(!email || !password){
         return res.status(400).json({ msg: 'All fields are required' });
     }
 
@@ -58,7 +58,7 @@ const loginUser = async (req, res) => {
         return res.status(400).json({ error: 'Incorrect email or password' });
     }
 
-    //Check if the password is correct
+    //Check if the password is incorrect
     const match = await bcrypt.compare(password, user.password);
     if(!match){
         return res.status(400).json({ error: 'Incorrect email or password' });
@@ -68,7 +68,7 @@ const loginUser = async (req, res) => {
         //Create a JWT Token
         const token = createToken(user._id);
 
-        res.status(200).json({ email, token, role }); 
+        res.status(200).json({ email, token, role: user.role }); 
     }
     catch(error){
         console.log(err);

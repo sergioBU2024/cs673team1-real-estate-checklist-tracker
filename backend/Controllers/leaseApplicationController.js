@@ -4,12 +4,12 @@ import LeaseApplication from '../models/LeaseApplicationModel.js';
 
 /**********************************************Get All Applications of a specific user  *********************************************/
 const getApplications = async (req, res) => {
-    //get all applications of a specific user
-    try{
-        const applications = await LeaseApplication.find({user: req.user._id});
+    try {
+        const applications = await LeaseApplication.find({
+            users: { $in: [req.user._id] }
+        });
         res.status(200).json(applications);
-    }
-    catch(error){
+    } catch(error) {
         console.log(error);
         res.status(500).json({ error: error.message });
     }

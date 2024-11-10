@@ -1,6 +1,6 @@
 /**********************************************Get All Applications of a specific user  *********************************************/
 const getApplications = async () => {
-    const res = await fetch('/api/applications/', {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/applications/`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

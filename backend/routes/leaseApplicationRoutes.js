@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 //Get All Applications for specific user Route
-router.get('/', getApplications);
+router.get('/', auth, getApplications);
 
 //Add a new Application Route
 router.post('/', auth, addApplication);

@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import { loginUser } from '../controllers/usersController';
+import { loginUser } from '../../controllers/usersController';
+import { UserContext } from '../../contexts/UserContext';
+import Alert from '../Alert';
+
 
 function Login() {
+  // User user context
+  const { user, setUser } = useContext(UserContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  //Error State
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,18 +25,25 @@ function Login() {
         const data = await loginUser(loginData.email, loginData.password);
         console.log(data);
 
+        setUser({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: loginData.email,
+          password: loginData.password,
+          role: data.role,
+          token: data.token,
+        });
+
         const userRole = data.role;
 
         if (userRole === 'Agent') {
           navigate('/dashboard');
         } else if (userRole === 'Client') {
           navigate('/client');
-        } else if (userRole === 'Broker') {
-          navigate('/broker-home');
         }
 
     } catch (error) {
-      console.error("Error:", error);
+      setError(error.message);
     }
   };
 
@@ -74,6 +90,8 @@ function Login() {
           {/* Submit button */}
           <button type="submit" className="login-btn">Login</button>
         </form>
+
+        {error && <Alert msg={error} />}
       </div>
     </div>
   );

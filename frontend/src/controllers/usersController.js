@@ -18,6 +18,8 @@ const loginUser = async (email, password) => {
         throw Error(data.error);
     }
 
+    console.log(data);
+
     return data;
 }
 

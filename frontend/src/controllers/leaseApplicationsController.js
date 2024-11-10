@@ -1,6 +1,26 @@
 /**********************************************Get All Applications of a specific user  *********************************************/
-const getApplications = async () => {
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/applications/`, {
+const getApplicationsClient = async () => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/applications/client`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        }
+        
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+        throw Error(data.error);
+    }
+
+    return data;
+}
+
+/**********************************************Get All Applications of a specific user  *********************************************/
+const getApplicationsAgent = async () => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/applications/agent`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -84,5 +104,5 @@ const updateApplication = async (application, location, userEmails) => {
     return data;
 }
 
-export { getApplications, addApplication, deleteApplication, updateApplication };
+export { getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication };
 

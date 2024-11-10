@@ -2,12 +2,34 @@ import mongoose from 'mongoose';
 import User from '../models/UserModel.js';
 import LeaseApplication from '../models/LeaseApplicationModel.js';
 
-/**********************************************Get All Applications of a specific user  *********************************************/
-const getApplications = async (req, res) => {
+/**********************************************Get All Applications of a specific Client  *********************************************/
+const getApplicationsClient = async (req, res) => {
     try {
         const applications = await LeaseApplication.find({
             users: { $in: [req.user._id] }
-        });
+        })
+        .populate('agent', 'firstName lastName')  // Populate agent with just firstName and lastName
+        .exec();
+        
+        console.log(applications);
+        res.status(200).json(applications);
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
+
+/**********************************************Get All Applications of a specific Client  *********************************************/
+const getApplicationsAgent= async (req, res) => {
+    try {
+        const applications = await LeaseApplication.find({
+            agent: { $in: [req.user._id] }
+        })
+        .populate('agent', 'firstName lastName')  // Populate agent with just firstName and lastName
+        .exec();
+        
+        console.log(applications);
         res.status(200).json(applications);
     } catch(error) {
         console.log(error);
@@ -145,4 +167,4 @@ const updateApplication = async (req, res) => {
     }
 }
 
-export {getApplications, addApplication, deleteApplication, updateApplication};
+export {getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication};

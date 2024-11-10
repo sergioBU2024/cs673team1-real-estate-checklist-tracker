@@ -1,12 +1,15 @@
 import express from 'express';
-import { addApplication, getApplications, deleteApplication, updateApplication } from '../Controllers/leaseApplicationController.js';
+import { addApplication, getApplicationsClient, getApplicationsAgent, deleteApplication, updateApplication } from '../Controllers/leaseApplicationController.js';
 import auth from '../Middlewares/auth.js';
 
 const router = express.Router();
 
 
-//Get All Applications for specific user Route
-router.get('/', auth, getApplications);
+//Get All Applications for specific client Route
+router.get('/client', auth, getApplicationsClient);
+
+//Get All Applications for specific agent Route
+router.get('/agent', auth, getApplicationsAgent);
 
 //Add a new Application Route
 router.post('/', auth, addApplication);

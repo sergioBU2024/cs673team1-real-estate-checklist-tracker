@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
-import { getApplicationsClient } from '../../controllers/leaseApplicationsController';
+import { getApplicationsAgent } from '../../controllers/leaseApplicationsController';
 import Header from '../Header';
 import { 
   Box,
@@ -121,7 +121,7 @@ const LoadingSkeleton = () => (
   </Box>
 );
 
-const ClientHomePage = () => {
+const AgentHomePage = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [applications, setApplications] = useState([]);
@@ -131,7 +131,7 @@ const ClientHomePage = () => {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const data = await getApplicationsClient();
+        const data = await getApplicationsAgent();
         setApplications(data);
       } catch (err) {
         setError(err.message);
@@ -194,4 +194,4 @@ const ClientHomePage = () => {
   );
 };
 
-export default ClientHomePage;
+export default AgentHomePage;

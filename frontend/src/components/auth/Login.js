@@ -25,7 +25,7 @@ function Login() {
         const data = await loginUser(loginData.email, loginData.password);
         console.log(data);
 
-        setUser({
+        await setUser({
           firstName: data.firstName,
           lastName: data.lastName,
           email: loginData.email,

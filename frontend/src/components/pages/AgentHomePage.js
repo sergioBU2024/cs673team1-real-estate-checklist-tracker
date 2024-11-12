@@ -14,6 +14,7 @@ import {
   Skeleton,
   IconButton,
   Paper,
+  Button,
 } from '@mui/material';
 import {
   LocationOn,
@@ -147,14 +148,25 @@ const AgentHomePage = () => {
     navigate(`/applications/${applicationId}`);
   };
 
+    // handleAddClick
+    const handleAddClick = () => {
+      navigate('/add-application');
+    };
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
       <Header username={`${user.firstName} ${user.lastName}`} />
       
       <Container maxWidth="md" sx={{ py: 4 }}>
-        <Typography variant="h4" component="h1" sx={{ mb: 4, fontWeight: 'bold' }}>
-          Your Applications
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+          <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold' }}>
+            Your Applications
+          </Typography>
+          <Button variant="contained" color="primary" onClick={handleAddClick}sx={{ textTransform: 'none' }}>
+            Add
+          </Button>
+        </Box>
+
         
         <Paper 
           sx={{ 

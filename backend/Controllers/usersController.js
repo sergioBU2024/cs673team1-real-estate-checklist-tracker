@@ -101,7 +101,7 @@ const updateUserInfo = async (req, res) => {
     const { firstName, lastName, officeLocation, phoneNumber, password } = req.body;
 
     // Check if fields are not empty where required
-    if (!firstName || !lastName || !phoneNumber) {
+    if (!firstName || !lastName) {
         return res.status(400).json({ msg: 'First name, last name, and phone number are required' });
     }
 

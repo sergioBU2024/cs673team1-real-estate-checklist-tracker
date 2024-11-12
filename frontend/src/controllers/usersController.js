@@ -60,3 +60,50 @@ const registerUser = async (firstName, lastName, email, password, role, officeLo
 }
 
 export { registerUser };
+
+/***************************************************Get User Info ********************************************************/
+const getUserInfo = async () => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/info`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+        throw Error(data.error);
+    }
+
+    console.log(data);
+
+    return data;
+}
+
+export { getUserInfo };
+
+/***************************************************Update User Info ********************************************************/
+const updateUserInfo = async (firstName, lastName, phoneNumber, officeLocation, password) => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/info`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({firstName, lastName, phoneNumber, officeLocation, password})
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+        throw Error(data.error);
+    }
+
+    console.log(data);
+
+    return data;
+}
+
+export { updateUserInfo };

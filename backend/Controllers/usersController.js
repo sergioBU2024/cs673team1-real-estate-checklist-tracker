@@ -85,4 +85,64 @@ const loginUser = async (req, res) => {
     }
 }
 
-export {registerUser, loginUser};
+//get user info
+const getUserInfo = async (req, res) => {
+    const user = await User.findById(req.user._id);
+    res.json(user);
+}
+
+//update user info
+/**********************************************Update User Info *******************************************/
+const updateUserInfo = async (req, res) => {
+    // Get user ID from authenticated user
+    const userId = req.user._id;
+
+    // Grab data from the request body
+    const { firstName, lastName, officeLocation, phoneNumber, password } = req.body;
+
+    // Check if fields are not empty where required
+    if (!firstName || !lastName || !phoneNumber) {
+        return res.status(400).json({ msg: 'First name, last name, and phone number are required' });
+    }
+
+    try {
+        // Find the user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update fields if provided
+        user.firstName = firstName || user.firstName;
+        user.lastName = lastName || user.lastName;
+        user.phoneNumber = phoneNumber || user.phoneNumber;
+        
+        // If user is an agent, check and update office location
+        if (user.role === 'Agent') {
+            user.officeLocation = officeLocation || user.officeLocation;
+        }
+
+        // If a new password is provided, hash it and update
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(password, salt);
+        }
+
+        // Save updated user information
+        await user.save();
+
+        res.status(200).json({
+            msg: 'User information updated successfully',
+            user: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phoneNumber: user.phoneNumber,
+                officeLocation: user.officeLocation
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export {registerUser, loginUser, getUserInfo, updateUserInfo};

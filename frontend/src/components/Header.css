@@ -21,19 +21,21 @@
 .logo-text h1 {
     margin: 0;
     font-size: 24px;
-    color: white;
+    color: black;
+
 }
 
 .logo-text p {
     margin: 0;
     font-size: 12px;
-    color: white;
+    color: black;
 }
 
 .welcome-text {
     position: relative;
     cursor: pointer;
     text-align: right;
+    color: black;
 }
 
 .welcome {

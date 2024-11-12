@@ -1,0 +1,88 @@
+/* General container for the settings page */
+.settings-container {
+    width: 400px; /* Match the form's width in the screenshot */
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+/* Header title styling */
+.settings-container h4 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333333;
+}
+
+/* Form fields styling */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666666;
+    text-align: left;
+}
+
+.form-group input,
+.form-group .MuiOutlinedInput-root {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #eaeaea; /* Light grey background for inputs */
+    color: #333333;
+}
+
+/* Remove outline on focus for inputs */
+.form-group input:focus,
+.form-group .MuiOutlinedInput-root:focus {
+    outline: none;
+    border-color: #cccccc;
+}
+
+/* Button styling */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.close-btn,
+.save-btn {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.close-btn {
+    background-color: #cccccc;
+    color: #333333;
+}
+
+.close-btn:hover {
+    background-color: #b3b3b3;
+}
+
+.save-btn {
+    background-color: #5a5a5a;
+    color: #ffffff;
+}
+
+.save-btn:hover {
+    background-color: #4d4d4d;
+}

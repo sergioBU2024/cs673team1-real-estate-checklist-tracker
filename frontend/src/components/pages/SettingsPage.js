@@ -83,10 +83,10 @@ const SettingsPage = () => {
       <Paper
         elevation={3}
         sx={{
-          width: '500px', // Increase width for better readability
-          padding: '40px', // Increase padding for a more spacious layout
+          width: '500px',
+          padding: '40px',
           borderRadius: '12px',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)', // Adjust shadow for a softer look
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
           textAlign: 'center',
           backgroundColor: '#ffffff',
         }}
@@ -103,14 +103,10 @@ const SettingsPage = () => {
           variant="standard"
           value={updatedUser.firstName}
           onChange={handleChange}
-          InputProps={{
-            disableUnderline: true,
-            sx: {
-              backgroundColor: '#eaeaea',
-              borderRadius: '8px',
-              padding: '10px 16px', // Increase padding for more spacious fields
-              width: '100%', // Ensures full width
-            },
+          sx={{
+            backgroundColor: '#eaeaea',
+            borderRadius: '8px',
+            width: '100%'
           }}
         />
         <TextField
@@ -121,14 +117,10 @@ const SettingsPage = () => {
           variant="standard"
           value={updatedUser.lastName}
           onChange={handleChange}
-          InputProps={{
-            disableUnderline: true,
-            sx: {
-              backgroundColor: '#eaeaea',
-              borderRadius: '8px',
-              padding: '10px 16px',
-              width: '100%',
-            },
+          sx={{
+            backgroundColor: '#eaeaea',
+            borderRadius: '8px',
+            width: '100%',
           }}
         />
         <TextField
@@ -139,14 +131,10 @@ const SettingsPage = () => {
           variant="standard"
           value={updatedUser.phoneNumber}
           onChange={handleChange}
-          InputProps={{
-            disableUnderline: true,
-            sx: {
-              backgroundColor: '#eaeaea',
-              borderRadius: '8px',
-              padding: '10px 16px',
-              width: '100%',
-            },
+          sx={{
+            backgroundColor: '#eaeaea',
+            borderRadius: '8px',
+            width: '100%',
           }}
         />
         <TextField
@@ -157,14 +145,10 @@ const SettingsPage = () => {
           variant="standard"
           value={updatedUser.officeLocation}
           onChange={handleChange}
-          InputProps={{
-            disableUnderline: true,
-            sx: {
-              backgroundColor: '#eaeaea',
-              borderRadius: '8px',
-              padding: '10px 16px',
-              width: '100%',
-            },
+          sx={{
+            backgroundColor: '#eaeaea',
+            borderRadius: '8px',
+            width: '100%',
           }}
         />
 

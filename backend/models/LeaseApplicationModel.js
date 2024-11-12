@@ -13,7 +13,12 @@ const LeaseApplicationSchema = new mongoose.Schema({
     users: [{
         type: mongoose.Schema.Types.ObjectId,  // Array of users referenced by ObjectId
         ref: 'User'
-    }]
+    }],
+    tasks: [{
+        type: mongoose.Schema.Types.ObjectId,  // Array of tasks referenced by ObjectId
+        ref: 'Task'
+    }],
+
 }, { timestamps: true });
 
 const LeaseApplication = mongoose.model('LeaseApplication', LeaseApplicationSchema);

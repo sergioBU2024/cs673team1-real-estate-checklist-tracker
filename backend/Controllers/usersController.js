@@ -11,12 +11,21 @@ const createToken = (_id) => {
 /*****************************************Register User *****************************************/
 const registerUser = async (req, res) => {
     //Grab Data from the Request Body
-    const {firstName, lastName, email, password, role} = req.body;
+    const {firstName, lastName, email, password, role, officeLocation, phoneNumber} = req.body;
+
+    
+    //if role is agent, check if officeLocation is not empty
+    if(role === 'Agent'){
+        if(!officeLocation){
+            return res.status(400).json({ msg: 'All fields are required' });
+        }
+    }
 
     //Check the fields are not empty
-    if(!firstName || !lastName || !email || !password || !role){
+    if(!firstName || !lastName || !email || !password || !role || !phoneNumber){
         return res.status(400).json({ msg: 'All fields are required' });
     }
+
 
     //Check if user email already exists
     const exist = await User.findOne({ email });
@@ -30,7 +39,7 @@ const registerUser = async (req, res) => {
 
     try{
         //Register the User
-        const user = await User.create({firstName, lastName, email, password: hashedPassword, role});
+        const user = await User.create({firstName, lastName, email, password: hashedPassword, role, officeLocation, phoneNumber});
         //Create a JWT Token
         const token = createToken(user._id);
         //Send the Token in the Response

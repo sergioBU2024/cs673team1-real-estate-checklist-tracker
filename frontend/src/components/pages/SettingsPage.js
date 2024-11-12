@@ -6,7 +6,7 @@ const SettingsPage = () => {
   const navigate = useNavigate();
 
   const handleClose = () => {
-    navigate('/dashboard');
+    navigate(-1);
   };
 
   return (

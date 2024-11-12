@@ -1,89 +1,148 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignUp.css';
+import { registerUser } from '../../controllers/usersController';
+import { UserContext } from '../../contexts/UserContext';
+import Alert from '../Alert';
 
 function SignUp() {
+  const { setUser } = useContext(UserContext);  // Use context to set user data
   const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [officeLocation, setOfficeLocation] = useState('');
+  const [error, setError] = useState(null);
 
-  const handleSignUp = (e) => {
+  const role = 'Agent'; // Set role to 'Agent' by default
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validate input and handle sign-up logic here
-    navigate('/'); // Redirect to login after successful sign-up
+    setError(null); // Clear any previous errors
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const data = await registerUser(
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+        officeLocation,
+        phoneNumber
+      );
+
+      setUser({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email,
+        role: data.role,
+        token: data.token,
+      });
+
+      navigate('/dashboard'); // Redirect to dashboard after sign-up
+    } catch (err) {
+      setError(err.message); // Set error for Alert component
+    }
   };
 
   return (
     <div className="signup-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignUp}>
-        <div className="form-group">
-          <label>Name</label>
-          <input
-            value={name}
-            type = "text"
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+      <div className="signup-left">
+        <div className="logo">
+          <img src="/logo.png" alt="Logo" />
         </div>
-        <div className="form-group">
-          <label>Email</label>
-          <input 
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
-          />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input 
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
-        </div>
-        <div className="form-group">
-          <label>Confirm Password</label>
-          <input 
-            type="password" 
-            value={confirmPassword} 
-            onChange={(e) => setConfirmPassword(e.target.value)} 
-            required 
-          />
-        </div>
-        <div className="form-group">
-          <label>Phone</label>
-          <input
-            value={phone}
-            type = "tel"
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-            <label htmlFor="role">Role</label>
-            <select
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                required
-            >
-                <option value="">Select Role</option>
-                <option value="Agent">Agent</option>
-                <option value="Broker">Broker</option>
-                <option value="Client">Client</option>
-            </select>
-        </div>        
-        <button type="submit" className="signup-btn">Sign Up</button>
-      </form>
-      <p>Already have an account? <a href="/" onClick={() => navigate('/')}>Log In</a></p>
+      </div>
+      <div className="signup-right">
+        <h1>Sign Up as Agent</h1>
+        <p>Already have an account? <a href="/login">Log In</a></p>
+        <form onSubmit={handleSubmit}>
+
+          <div className="form-group">
+            <label>First Name</label>
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Last Name</label>
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Phone Number</label>
+            <input
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Office Location field, required for "Agent" role */}
+          <div className="form-group">
+            <label>Office Location</label>
+            <input
+              type="text"
+              value={officeLocation}
+              onChange={(e) => setOfficeLocation(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="signup-btn">Sign Up</button>
+        </form>
+
+        {/* Display error alert if there’s an error */}
+        {error && <Alert msg={error} />}
+      </div>
     </div>
   );
 }

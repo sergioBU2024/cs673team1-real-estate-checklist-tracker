@@ -31,12 +31,12 @@ const registerUser = async (firstName, lastName, email, password, role, officeLo
     
     //if agent require officeLocation
     if(role === 'Agent'){
-        if(!officeLocation){
+        if(!officeLocation || !phoneNumber){
             throw Error('All fields are required');
         }
     }
 
-    if(!firstName || !lastName || !email || !password || !role || !phoneNumber){
+    if(!firstName || !lastName || !email || !password || !role){
         throw Error('All fields are required');
     }
 
@@ -107,3 +107,27 @@ const updateUserInfo = async (firstName, lastName, phoneNumber, officeLocation, 
 }
 
 export { updateUserInfo };
+
+/***************************************************Send Invitation Email ********************************************************/
+const sendInvitationEmail = async (email, firstName) => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/invite`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({email, firstName})
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+        throw Error(data.error);
+    }
+
+    console.log(data);
+
+    return data;
+}
+
+export { sendInvitationEmail };

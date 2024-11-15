@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
+import { ApplicationsContext } from '../../contexts/ApplicationsContext';
 import { getApplicationsAgent } from '../../controllers/leaseApplicationsController';
 import Header from '../Header';
 import { 
@@ -125,33 +126,20 @@ const LoadingSkeleton = () => (
 const AgentHomePage = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const [applications, setApplications] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { applications, loading, error, fetchApplications } = useContext(ApplicationsContext);
 
   useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const data = await getApplicationsAgent();
-        setApplications(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchApplications();
-  }, []);
+    // Fetch applications only once on component mount
+    fetchApplications(getApplicationsAgent);
+  }, [fetchApplications]); // Empty dependency array
 
   const handleApplicationClick = (applicationId) => {
     navigate(`/applications/${applicationId}`);
   };
 
-    // handleAddClick
-    const handleAddClick = () => {
-      navigate('/add-application');
-    };
+  const handleAddClick = () => {
+    navigate('/add-application');
+  };
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>

@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { getApplicationsClient } from '../../controllers/leaseApplicationsController';
+import { ApplicationsContext } from '../../contexts/ApplicationsContext';
 import Header from '../Header';
 import { 
   Box,
@@ -124,24 +125,11 @@ const LoadingSkeleton = () => (
 const ClientHomePage = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const [applications, setApplications] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { applications, loading, error, fetchApplications } = useContext(ApplicationsContext);
 
   useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const data = await getApplicationsClient();
-        setApplications(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchApplications();
-  }, []);
+    fetchApplications(getApplicationsClient);
+  }, [fetchApplications]);
 
   const handleApplicationClick = (applicationId) => {
     navigate(`/applications/${applicationId}`);

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
-import { Box, Typography, Container, Paper, TextField, Button, MenuItem, Grid } from '@mui/material';
+import { Box, Typography, Container, Paper, TextField, Button, MenuItem } from '@mui/material';
+import { registerUser, sendInvitationEmail } from '../../controllers/usersController';
+import { addApplication } from '../../controllers/leaseApplicationsController';
 
 const AddApplicationPage = () => {
   const navigate = useNavigate();
@@ -24,8 +26,6 @@ const AddApplicationPage = () => {
   const handleNumApplicantsChange = (e) => {
     const number = parseInt(e.target.value);
     setNumApplicants(number);
-
-    // Adjust the applicants array based on the selected number of applicants
     setApplicants(Array.from({ length: number }, () => ({ firstName: '', lastName: '', email: '' })));
   };
 
@@ -35,13 +35,47 @@ const AddApplicationPage = () => {
     setApplicants(updatedApplicants);
   };
 
-  const handleSaveApplication = () => {
-    const applicationData = {
-      address,
-      applicants,
-    };
-    console.log('Application Saved:', applicationData);
-    // Add the logic to save the application, e.g., send to an API
+  const handleSaveApplication = async () => {
+    try {
+      const userIds = [];
+      console.log('Saving Application:', address, applicants);
+      // Register applicants and collect their IDs
+      for (const applicant of applicants) {
+        console.log('Registering Applicant:', applicant);
+        const userResponse = await registerUser(
+          applicant.firstName,
+          applicant.lastName,
+          applicant.email,
+          'defaultPassword123',  // Set a default password for new clients
+          'Client',               // The role of the user
+          '',                     // Optional: Add other details (e.g., phone number, etc.)
+          ''
+        );
+        userIds.push(userResponse.userId); // Assuming the response includes the new user's ID
+      }
+
+      // Prepare the application data
+      const applicationData = {
+        location: `${address.street}, ${address.city}, ${address.state} ${address.zip}`,
+        userIds,
+      };
+
+      // Create the application with the user IDs
+      const applicationResponse = await addApplication(applicationData.location, userIds);
+      console.log('Application Saved:', applicationResponse.data);
+
+      for (const applicant of applicants) {
+        console.log('Sending Invitation Email:', applicant);
+        await sendInvitationEmail(applicant.email, applicant.firstName);
+      }
+      
+      
+
+      // Navigate to the dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error saving application:', error);
+    }
   };
 
   const handleClose = () => {
@@ -67,38 +101,32 @@ const AddApplicationPage = () => {
             value={address.street}
             onChange={(e) => handleAddressChange('street', e.target.value)}
           />
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="City"
-                margin="normal"
-                variant="outlined"
-                value={address.city}
-                onChange={(e) => handleAddressChange('city', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <TextField
-                fullWidth
-                label="State"
-                margin="normal"
-                variant="outlined"
-                value={address.state}
-                onChange={(e) => handleAddressChange('state', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <TextField
-                fullWidth
-                label="ZIP Code"
-                margin="normal"
-                variant="outlined"
-                value={address.zip}
-                onChange={(e) => handleAddressChange('zip', e.target.value)}
-              />
-            </Grid>
-          </Grid>
+          <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+            <TextField
+              fullWidth
+              label="City"
+              margin="normal"
+              variant="outlined"
+              value={address.city}
+              onChange={(e) => handleAddressChange('city', e.target.value)}
+            />
+            <TextField
+              fullWidth
+              label="State"
+              margin="normal"
+              variant="outlined"
+              value={address.state}
+              onChange={(e) => handleAddressChange('state', e.target.value)}
+            />
+            <TextField
+              fullWidth
+              label="ZIP Code"
+              margin="normal"
+              variant="outlined"
+              value={address.zip}
+              onChange={(e) => handleAddressChange('zip', e.target.value)}
+            />
+          </Box>
 
           {/* Number of Applicants Dropdown */}
           <TextField
@@ -119,11 +147,9 @@ const AddApplicationPage = () => {
 
           {/* Dynamic Applicant Fields */}
           {applicants.map((applicant, index) => (
-            <Grid container spacing={2} key={index} sx={{ mt: 2 }}>
-              <Grid item xs={12}>
-                <Typography variant="h6">Applicant {index + 1}</Typography>
-              </Grid>
-              <Grid item xs={6}>
+            <Box key={index} sx={{ mt: 2 }}>
+              <Typography variant="h6">Applicant {index + 1}</Typography>
+              <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
                 <TextField
                   fullWidth
                   label="First Name"
@@ -131,8 +157,6 @@ const AddApplicationPage = () => {
                   value={applicant.firstName}
                   onChange={(e) => handleApplicantChange(index, 'firstName', e.target.value)}
                 />
-              </Grid>
-              <Grid item xs={6}>
                 <TextField
                   fullWidth
                   label="Last Name"
@@ -140,17 +164,15 @@ const AddApplicationPage = () => {
                   value={applicant.lastName}
                   onChange={(e) => handleApplicantChange(index, 'lastName', e.target.value)}
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  variant="outlined"
-                  value={applicant.email}
-                  onChange={(e) => handleApplicantChange(index, 'email', e.target.value)}
-                />
-              </Grid>
-            </Grid>
+              </Box>
+              <TextField
+                fullWidth
+                label="Email"
+                variant="outlined"
+                value={applicant.email}
+                onChange={(e) => handleApplicantChange(index, 'email', e.target.value)}
+              />
+            </Box>
           ))}
 
           {/* Save and Cancel Buttons */}

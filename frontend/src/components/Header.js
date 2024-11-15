@@ -1,11 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ApplicationsContext } from '../contexts/ApplicationsContext';  // Import the context
 import './Header.css';
 
 function Header({ username = 'Mr. Abraham Lincoln' }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  
+  const { clearApplications } = useContext(ApplicationsContext);  // Access setApplications from the context
 
   // Toggle dropdown visibility
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -25,7 +28,10 @@ function Header({ username = 'Mr. Abraham Lincoln' }) {
 
   // Navigation handlers
   const handleSettings = () => navigate('/settings');
-  const handleLogout = () => navigate('/');
+  const handleLogout = () => {
+    clearApplications();  // Clear applications on logout
+    navigate('/');        // Redirect to the home page
+  };
 
   return (
     <header className="header">

@@ -8,11 +8,13 @@ import ApplicationDetailPage from './components/pages/ApplicationDetailPage';
 import AgentHomePage from './components/pages/AgentHomePage';
 import SettingsPage from './components/pages/SettingsPage';// setting page
 import UserProvider from './contexts/UserContext';
+import { ApplicationsProvider } from './contexts/ApplicationsContext';
 
 function App() {
   return (
 
     <UserProvider>
+    <ApplicationsProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -25,6 +27,8 @@ function App() {
           
         </Routes>
       </Router>
+    </ApplicationsProvider>
+      
     </UserProvider>
   );
 }

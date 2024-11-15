@@ -39,28 +39,32 @@ const getApplicationsAgent = async () => {
 }
 
 /**********************************************Create New Application *******************************************/
-const addApplication = async (location, userEmails) => {
-    if(!location || !userEmails){
-        throw Error('All fields are required');
+const addApplication = async (location, userIds) => {
+    if (!location || !userIds || !userIds.length) {
+        throw new Error('All fields are required');
     }
 
-    const res = await fetch('/api/applications/', {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/applications/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({location, userEmails})
+        body: JSON.stringify({
+            location,
+            userIds
+        })
     });
 
     const data = await res.json();
 
-    if(!res.ok){
-        throw Error(data.error);
+    if (!res.ok) {
+        throw new Error(data.error || 'Failed to add application');
     }
 
     return data;
-}
+};
+
 
 /**********************************************Delete Application *******************************************/
 const deleteApplication = async (_id) => {

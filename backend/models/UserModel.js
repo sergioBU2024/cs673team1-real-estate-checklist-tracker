@@ -24,11 +24,9 @@ const UserSchema = new mongoose.Schema({
     },
     phoneNumber:{
         type: String,
-        required: true
     },
     officeLocation:{
         type: String,
-        required: true
     }
 }, { timestamps: true });
 

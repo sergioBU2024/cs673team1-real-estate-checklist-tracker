@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, loginUser, getUserInfo, updateUserInfo } from '../Controllers/usersController.js';
+import { registerUser, loginUser, getUserInfo, updateUserInfo, sendInvitationEmail } from '../Controllers/usersController.js';
 import auth from '../Middlewares/auth.js';
 
 const router = express.Router();
@@ -15,5 +15,10 @@ router.get('/info',auth, getUserInfo);
 
 //Update user info Route
 router.put('/info',auth, updateUserInfo);
+
+//Send Invitation Email Route
+router.post('/invite',auth, sendInvitationEmail);
+
+
 
 export {router as userRoutes}; 

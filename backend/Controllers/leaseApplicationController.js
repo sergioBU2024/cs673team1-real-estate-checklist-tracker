@@ -39,49 +39,30 @@ const getApplicationsAgent= async (req, res) => {
 
 /**********************************************Create New Application *******************************************/
 const addApplication = async (req, res) => {
+    const { 
+        location, 
+        userIds, 
+    } = req.body;
 
-    //Grab Data from the Request Body
-    const {location, userEmails} = req.body;
-    
-    //Check the fields are not empty
-    if(!location || !userEmails){
-        return res.status(400).json({ msg: 'All fields are required' });
-    }
-
-    //Grab the authenticated user from the request body
     const user = await User.findById(req.user._id);
 
-    //check if the user is an agent
-    if(user.role !== 'Agent'){
+    if (user.role !== 'Agent') {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    // Find all users by their emails
-    const users = await User.find({ email: { $in: userEmails } });
-    if (users.length !== userEmails.length) {
-        return res.status(404).json({ msg: 'One or more users not found' });
-    }
+    try {
+        const application = await LeaseApplication.create({
+            agent: user._id,             // The agent who created the application
+            location,                    // Full address of the property
+            users: userIds,              // Array of userIds for applicants
+        });
 
-    //check if all users are clients
-    const allUsers = users.every(user => user.role === 'Client');
-    if(!allUsers){
-        return res.status(400).json({ error: 'All users must be clients' });
-    }
-
-    // Extract the ObjectIds of the users
-    const userIds = users.map(user => user._id);
-    
-    
-
-    try{
-        const application = await LeaseApplication.create({agent: user._id, location, users: userIds});
         res.status(200).json({ success: 'Application Created.', application });
-    }
-    catch(error){
+    } catch (error) {
         res.status(500).json({ error: error.message });
     }
-    
-}
+};
+
 
 /**********************************************Delete Application *******************************************/
 const deleteApplication = async (req, res) => {

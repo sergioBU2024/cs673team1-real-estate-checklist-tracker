@@ -51,6 +51,8 @@ const AddApplicationPage = () => {
           '',                     // Optional: Add other details (e.g., phone number, etc.)
           ''
         );
+        console.log('Sending Invitation Email:', applicant);
+        await sendInvitationEmail(applicant.email, applicant.firstName, userResponse.userId);
         userIds.push(userResponse.userId); // Assuming the response includes the new user's ID
       }
 
@@ -63,11 +65,6 @@ const AddApplicationPage = () => {
       // Create the application with the user IDs
       const applicationResponse = await addApplication(applicationData.location, userIds);
       console.log('Application Saved:', applicationResponse.data);
-
-      for (const applicant of applicants) {
-        console.log('Sending Invitation Email:', applicant);
-        await sendInvitationEmail(applicant.email, applicant.firstName);
-      }
       
       
 

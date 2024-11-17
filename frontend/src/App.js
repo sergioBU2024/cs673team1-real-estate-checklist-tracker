@@ -7,6 +7,7 @@ import AddApplicationPage from './components/pages/AddApplicationPage';// Add ap
 import ApplicationDetailPage from './components/pages/ApplicationDetailPage';
 import AgentHomePage from './components/pages/AgentHomePage';
 import SettingsPage from './components/pages/SettingsPage';// setting page
+import SignUpClientInvitation from './components/auth/SignUpClientInvitation'; // Import SignUpClientInvitation component
 import UserProvider from './contexts/UserContext';
 import { ApplicationsProvider } from './contexts/ApplicationsContext';
 
@@ -24,6 +25,8 @@ function App() {
           <Route path="/add-application" element={<AddApplicationPage />} />
           <Route path="/applications/:applicationId" element={<ApplicationDetailPage />} /> 
           <Route path="/settings" element={<SettingsPage />} /> {/* Settings route */}
+          // Add route for SignUpClientInvitation component with path="/signup/:clientID
+          <Route path="/signupnew/:userId" element={<SignUpClientInvitation />} />
           
         </Routes>
       </Router>

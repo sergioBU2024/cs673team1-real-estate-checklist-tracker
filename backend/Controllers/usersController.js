@@ -80,6 +80,13 @@ const getUserInfo = async (req, res) => {
     res.json(user);
 }
 
+const getNewUserInfo = async (req, res) => {
+    console.log(req.params.id);
+    const user = await User.findById(req.params.id);
+    res.json(user);
+}
+
+
 //update user info
 /**********************************************Update User Info *******************************************/
 const updateUserInfo = async (req, res) => {
@@ -139,7 +146,7 @@ const updateUserInfo = async (req, res) => {
 const sendInvitationEmail = async (req, res) => {
 
     // Grab data from the request body
-    const { email, firstName } = req.body;
+    const { email, firstName, id } = req.body;
 
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -155,7 +162,7 @@ const sendInvitationEmail = async (req, res) => {
         from: process.env.EMAIL_USER,
         to: email,
         subject: 'You\'ve been invited to apply for a lease!',
-        text: `Hello ${firstName},\n\nYou have been invited to apply for a lease. Please follow the instructions on our platform to complete your application.\n\nBest regards,\nThe Lease Application Team`
+        text: `Hello ${firstName},\n\nYou have been invited to apply for a lease. Please follow the instructions on our platform to complete your application.\n\nhttp://localhost:3000/signupnew/${id}\n\nBest regards,\nThe Lease Application Team`
     };
 
     try {
@@ -166,4 +173,4 @@ const sendInvitationEmail = async (req, res) => {
     }
 };
 
-export {registerUser, loginUser, getUserInfo, updateUserInfo, sendInvitationEmail};
+export {registerUser, loginUser, getUserInfo, getNewUserInfo, updateUserInfo, sendInvitationEmail};

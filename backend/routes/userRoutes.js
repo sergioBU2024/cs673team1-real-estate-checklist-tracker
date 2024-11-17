@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, loginUser, getUserInfo, updateUserInfo, sendInvitationEmail } from '../Controllers/usersController.js';
+import { registerUser, loginUser, getUserInfo, getNewUserInfo, updateUserInfo, sendInvitationEmail } from '../Controllers/usersController.js';
 import auth from '../Middlewares/auth.js';
 
 const router = express.Router();
@@ -12,6 +12,9 @@ router.post('/login', loginUser);
 
 //Get user info Route
 router.get('/info',auth, getUserInfo);
+
+//Get new user info Route
+router.get('/info/:id', getNewUserInfo)
 
 //Update user info Route
 router.put('/info',auth, updateUserInfo);

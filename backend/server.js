@@ -19,7 +19,7 @@ app.use('/api/tasks', taskroutes);
 
 mongoose.connect('mongodb+srv://sergiok:Password123@cluster0.x8kh0.mongodb.net', { dbName: 'demo_db' }).then(() => {
     console.log('Connected to MongoDB');
-    app.listen(4000, 'localhost', () => {
+    app.listen(4000, '0.0.0.0', () => {
         console.log('listening on port 4000');
     });
 }).catch(err => {

@@ -1,7 +1,7 @@
 /* Routes for assigning a task
 to clients and viewing tasks*/
 import express from 'express';
-import { assignTask, getTasksClient, uploadDocument } from '../Controllers/taskController.js';
+import { assignTask, getApplicationTasks, getTasksClient, uploadDocument } from '../Controllers/taskController.js';
 
 import auth from '../Middlewares/auth.js';
 
@@ -11,8 +11,12 @@ const router = express.Router();
 router.post('/assign', auth, assignTask);
 
 // Route for getting all tasks assigned to a specific client
-router.get('/client/:clientId', getTasksClient);
+router.get('/:clientId/:applicationId', getTasksClient);
+
+router.get('/:applicationId', getApplicationTasks);
 
 router.post('/upload', uploadDocument);
+
+
 
 export {router as taskroutes};

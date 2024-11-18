@@ -139,14 +139,36 @@ const assignTask = async (req, res) => {
 
 const getTasksClient = async (req, res) => {
     try {
-        const tasks = await Task.find({ assigned_to: req.params.clientId});
+        const { clientId, applicationId } = req.params;
 
-        res.json(tasks);
+        // Find tasks assigned to the client within the specified application
+        const tasks = await Task.find({ 
+            assigned_to: clientId, 
+            leaseApplication: applicationId 
+        });
+
+        res.status(200).json(tasks);
     } catch (err) {
-        res.status(500).send('Server error'); 
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+const getApplicationTasks = async (req, res) => {
+    try {
+        const { applicationId } = req.params;
+
+        // Find tasks assigned to the client within the specified application
+        const tasks = await Task.find({ leaseApplication: applicationId });
+
+        res.status(200).json(tasks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
     }
 }
 
-export { assignTask, getTasksClient, uploadDocument};
+
+export { assignTask, getTasksClient, getApplicationTasks, uploadDocument};
 
 

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import User from '../models/UserModel.js';
 import LeaseApplication from '../models/LeaseApplicationModel.js';
+import Task from '../models/TaskModel.js'; // Ensure Task model is imported
 
 /**********************************************Get All Applications of a specific Client  *********************************************/
 const getApplicationsClient = async (req, res) => {
@@ -36,6 +37,59 @@ const getApplicationsAgent= async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+
+/******************************************Get Applications Details ***********************************************/
+const getApplicationDetails = async (req, res) => {
+
+    // Check if the ID is Valid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error: 'Invalid ID' });
+    }
+
+    try {
+        // Check if the Application Exists
+        const application = await LeaseApplication.findById(req.params.id)
+            .populate('agent', 'firstName lastName')
+            .populate('users', 'firstName lastName')
+            .exec();
+
+        if (!application) {
+            return res.status(404).json({ error: 'Application Not Found' });
+        }
+
+        // Fetch tasks for the application
+        const tasks = await Task.find({ leaseApplication: application._id });
+
+        // Calculate progress for each user
+        const usersWithProgress = await Promise.all(application.users.map(async (user) => {
+            const userTasks = tasks.filter(task => task.assigned_to?.toString() === user._id.toString());
+            const totalTasks = userTasks.length;
+            const completedTasks = userTasks.filter(task => task.status === 'completed').length;
+            const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            return {
+                id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                progress,
+            };
+        }));
+
+        // Return the application details with user progress
+        res.status(200).json({
+            id: application._id,
+            location: application.location,
+            agent: application.agent,
+            users: usersWithProgress,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 
 /**********************************************Create New Application *******************************************/
 const addApplication = async (req, res) => {
@@ -148,4 +202,4 @@ const updateApplication = async (req, res) => {
     }
 }
 
-export {getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication};
+export {getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication, getApplicationDetails};

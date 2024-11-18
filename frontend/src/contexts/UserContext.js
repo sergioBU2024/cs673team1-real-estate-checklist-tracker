@@ -4,6 +4,7 @@ export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
+    id: localStorage.getItem("_id") || null,
     firstName:localStorage.getItem("firstName") || null,
     lastName: localStorage.getItem("lastName") || null,
     email: localStorage.getItem("email") || null,
@@ -15,6 +16,7 @@ const UserProvider = ({ children }) => {
   // Sync with localStorage whenever `user` changes
   useEffect(() => {
     if (user.token) {
+      localStorage.setItem("_id", user.id);
       localStorage.setItem("firstName", user.firstName);
       localStorage.setItem("lastName", user.lastName);
       localStorage.setItem("token", user.token);

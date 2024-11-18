@@ -1,8 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { ApplicationsContext } from '../../contexts/ApplicationsContext';
-import { getApplicationsAgent } from '../../controllers/leaseApplicationsController';
+import { getApplicationsAgent } from '../../controllers/leaseApplicationsController'; // Updated controller
+import { getApplicationTasks } from '../../controllers/tasksController'; // Import getApplicationTasks
 import Header from '../Header';
 import { 
   Box,
@@ -24,7 +25,7 @@ import {
   ChevronRight,
 } from '@mui/icons-material';
 
-const ApplicationCard = ({ application, onClick }) => {
+const ApplicationCard = ({ application, onClick, progress }) => {
   const daysSinceCreation = Math.floor(
     (new Date() - new Date(application.createdAt)) / (1000 * 60 * 60 * 24)
   );
@@ -87,12 +88,12 @@ const ApplicationCard = ({ application, onClick }) => {
               Application Progress
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              50%
+              {`${progress}%`}
             </Typography>
           </Box>
           <LinearProgress 
             variant="determinate" 
-            value={50} 
+            value={progress} 
             sx={{ height: 8, borderRadius: 1 }}
           />
         </Box>
@@ -127,11 +128,29 @@ const AgentHomePage = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const { applications, loading, error, fetchApplications } = useContext(ApplicationsContext);
+  const [progressData, setProgressData] = useState({});
 
   useEffect(() => {
     // Fetch applications only once on component mount
     fetchApplications(getApplicationsAgent);
-  }, [fetchApplications]); // Empty dependency array
+  }, [fetchApplications]);
+
+  const calculateProgress = (applicationId) => {
+    // Fetch all tasks for this application
+    getApplicationTasks(applicationId).then((tasks) => {
+      const totalTasks = tasks.length;
+      const completedTasks = tasks.filter(task => task.status === 'completed').length;
+      const progress = (completedTasks / totalTasks) * 100;
+      setProgressData((prev) => ({
+        ...prev,
+        [applicationId]: progress,
+      }));
+    });
+  };
+
+  useEffect(() => {
+    applications.forEach((app) => calculateProgress(app._id));
+  }, [applications]);
 
   const handleApplicationClick = (applicationId) => {
     navigate(`/applications/${applicationId}`);
@@ -150,21 +169,12 @@ const AgentHomePage = () => {
           <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold' }}>
             Your Applications
           </Typography>
-          <Button variant="contained" color="primary" onClick={handleAddClick}sx={{ textTransform: 'none' }}>
+          <Button variant="contained" color="primary" onClick={handleAddClick} sx={{ textTransform: 'none' }}>
             Add
           </Button>
         </Box>
 
-        
-        <Paper 
-          sx={{ 
-            maxHeight: 'calc(100vh - 200px)', 
-            overflow: 'auto',
-            p: 2,
-            bgcolor: 'transparent',
-            boxShadow: 'none'
-          }}
-        >
+        <Paper sx={{ maxHeight: 'calc(100vh - 200px)', overflow: 'auto', p: 2, bgcolor: 'transparent', boxShadow: 'none' }}>
           {loading ? (
             <LoadingSkeleton />
           ) : error ? (
@@ -177,6 +187,7 @@ const AgentHomePage = () => {
                 key={app._id}
                 application={app}
                 onClick={() => handleApplicationClick(app._id)}
+                progress={progressData[app._id] || 0} // Display progress dynamically
               />
             ))
           ) : (

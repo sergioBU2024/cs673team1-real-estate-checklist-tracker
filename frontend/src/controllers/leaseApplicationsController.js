@@ -38,6 +38,25 @@ const getApplicationsAgent = async () => {
     return data;
 }
 
+/******************************************Get Applications Details ***********************************************/
+const getApplicationDetails = async (applicationId) => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/applications/${applicationId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        }
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+        throw Error(data.error);
+    }
+
+    return data;
+}
+
 /**********************************************Create New Application *******************************************/
 const addApplication = async (location, userIds) => {
     if (!location || !userIds || !userIds.length) {
@@ -108,5 +127,5 @@ const updateApplication = async (application, location, userEmails) => {
     return data;
 }
 
-export { getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication };
+export { getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication, getApplicationDetails };
 

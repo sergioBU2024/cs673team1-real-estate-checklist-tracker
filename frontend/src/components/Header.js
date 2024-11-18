@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ApplicationsContext } from '../contexts/ApplicationsContext';  // Import the context
+import { ApplicationsContext } from '../contexts/ApplicationsContext';  // Import the ApplicationsContext
+import { UserContext } from '../contexts/UserContext';  // Import the UserContext
 import './Header.css';
 
-function Header({ username = 'Mr. Abraham Lincoln' }) {
+function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   
-  const { clearApplications } = useContext(ApplicationsContext);  // Access setApplications from the context
+  const { clearApplications } = useContext(ApplicationsContext);  // Access clearApplications from the context
+  const { user } = useContext(UserContext);  // Access the logged-in user from the UserContext
 
   // Toggle dropdown visibility
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -45,7 +47,7 @@ function Header({ username = 'Mr. Abraham Lincoln' }) {
 
       <div className="welcome-text" onClick={toggleDropdown} ref={dropdownRef}>
         <p className="welcome"><strong>Welcome,</strong></p>
-        <p className="username">{username}</p>
+        <p className="username">{user?.firstName + " " + user?.lastName || 'Guest'}</p>
         <span className={`arrow ${dropdownOpen ? 'open' : ''}`}>▼</span>
         {dropdownOpen && (
           <div className="dropdown-menu">

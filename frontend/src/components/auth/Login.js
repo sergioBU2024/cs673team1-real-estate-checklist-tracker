@@ -8,7 +8,7 @@ import Alert from '../Alert';
 
 function Login() {
   // User user context
-  const { user, setUser } = useContext(UserContext);
+  const {setUser } = useContext(UserContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,6 +26,7 @@ function Login() {
         console.log(data);
 
         await setUser({
+          id: data.id,
           firstName: data.firstName,
           lastName: data.lastName,
           email: loginData.email,

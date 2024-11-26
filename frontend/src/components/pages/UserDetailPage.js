@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Button, CircularProgress, Alert, List, ListItem, ListItemText, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import Header from '../Header';
 import { getTasksClient, assignTask } from '../../controllers/tasksController'; // Assuming the controller functions are correct
@@ -8,6 +8,7 @@ import { UserContext } from '../../contexts/UserContext';  // Assuming you have 
 
 const UserDetailPage = () => {
   const { applicationId, userId } = useParams();
+  const navigate = useNavigate(); // Hook for navigation
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,7 +21,7 @@ const UserDetailPage = () => {
     type: '',
   });
 
-  const { user } = useContext(UserContext);  // Get the user's role from context (assuming this is available)
+  const { user } = useContext(UserContext); // Get the user's role from context (assuming this is available)
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -43,8 +44,8 @@ const UserDetailPage = () => {
       }
     };
 
-    fetchUserDetails();  // Fetch user details when the component mounts
-    fetchTasks();        // Fetch tasks for the user
+    fetchUserDetails(); // Fetch user details when the component mounts
+    fetchTasks(); // Fetch tasks for the user
   }, [applicationId, userId]);
 
   // Handle input changes for new task creation
@@ -93,7 +94,11 @@ const UserDetailPage = () => {
         <Typography variant="h4">{`${userName}'s tasks`}</Typography> {/* Display user's name here */}
         <List>
           {tasks.map((task) => (
-            <ListItem key={task._id}>
+            <ListItem
+              key={task._id}
+              button
+              onClick={() => navigate(`/applications/${applicationId}/users/${userId}/task/${task._id}`)} // Navigate to task details page
+            >
               <ListItemText
                 primary={task.title}
                 secondary={`Status: ${task.status}`}
@@ -103,7 +108,7 @@ const UserDetailPage = () => {
         </List>
 
         {/* Conditionally render the "Add Task" form based on the user's role */}
-        {user.role !== 'Client' && (  // If the user is not a client, show the task assignment form
+        {user.role !== 'Client' && ( // If the user is not a client, show the task assignment form
           <Box sx={{ mt: 4 }}>
             <Typography variant="h6">Assign New Task</Typography>
             <TextField

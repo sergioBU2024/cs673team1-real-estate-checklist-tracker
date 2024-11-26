@@ -11,6 +11,7 @@ import SignUpClientInvitation from './components/auth/SignUpClientInvitation'; /
 import UserProvider from './contexts/UserContext';
 import { ApplicationsProvider } from './contexts/ApplicationsContext';
 import UserDetailPage from './components/pages/UserDetailPage';
+import TaskDetailsPage from './components/pages/TaskDetailsPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/settings" element={<SettingsPage />} /> {/* Settings route */}
           <Route path="/signupnew/:userId" element={<SignUpClientInvitation />} />
           <Route path="/applications/:applicationId/users/:userId" element={<UserDetailPage />} />
+          <Route path="/applications/:applicationId/users/:userId/task/:taskId" element={<TaskDetailsPage />} />
           
         </Routes>
       </Router>

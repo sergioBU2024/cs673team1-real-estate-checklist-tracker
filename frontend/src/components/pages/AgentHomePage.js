@@ -17,12 +17,14 @@ import {
   IconButton,
   Paper,
   Button,
+  TextField
 } from '@mui/material';
 import {
   LocationOn,
   Person,
   CalendarToday,
   ChevronRight,
+  Search
 } from '@mui/icons-material';
 
 const ApplicationCard = ({ application, onClick, progress }) => {
@@ -129,6 +131,8 @@ const AgentHomePage = () => {
   const { user } = useContext(UserContext);
   const { applications, loading, error, fetchApplications } = useContext(ApplicationsContext);
   const [progressData, setProgressData] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredApplications, setFilteredApplications] = useState([]);
 
   useEffect(() => {
     // Fetch applications only once on component mount
@@ -152,12 +156,36 @@ const AgentHomePage = () => {
     applications.forEach((app) => calculateProgress(app._id));
   }, [applications]);
 
+  useEffect(() => {
+    const query = searchQuery.toLowerCase();
+    setFilteredApplications(
+      applications.filter((app) => {
+        const clientName = app.clientName?.toLowerCase() || ''; // Safely access clientName
+        const location = app.location?.toLowerCase() || ''; // Safely access location
+        const id = app._id?.toLowerCase() || ''; // Safely access ID
+  
+        return (
+          clientName.includes(query) ||
+          location.includes(query) ||
+          id.includes(query)
+        );
+      })
+    );
+  }, [applications, searchQuery]);
+  
+  
+
+
   const handleApplicationClick = (applicationId) => {
     navigate(`/applications/${applicationId}`);
   };
 
   const handleAddClick = () => {
     navigate('/add-application');
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
   return (
@@ -174,6 +202,18 @@ const AgentHomePage = () => {
           </Button>
         </Box>
 
+        <TextField
+          variant="outlined"
+          fullWidth
+          placeholder="Search applications by client name, address, or ID"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          InputProps={{
+            startAdornment: <Search sx={{ mr: 1 }} />,
+          }}
+          sx={{ mb: 3 }}
+        />
+
         <Paper sx={{ maxHeight: 'calc(100vh - 200px)', overflow: 'auto', p: 2, bgcolor: 'transparent', boxShadow: 'none' }}>
           {loading ? (
             <LoadingSkeleton />
@@ -181,8 +221,8 @@ const AgentHomePage = () => {
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
             </Alert>
-          ) : applications.length > 0 ? (
-            applications.map((app) => (
+          ) : filteredApplications.length > 0 ? (
+            filteredApplications.map((app) => (
               <ApplicationCard
                 key={app._id}
                 application={app}
@@ -198,7 +238,8 @@ const AgentHomePage = () => {
                 </Typography>
               </CardContent>
             </Card>
-          )}
+          )
+          }
         </Paper>
       </Container>
     </Box>

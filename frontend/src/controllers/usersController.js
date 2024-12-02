@@ -156,3 +156,27 @@ const sendInvitationEmail = async (email, firstName, id) => {
 }
 
 export { sendInvitationEmail };
+
+
+/***************************************************Delete User ********************************************************/
+const deleteUser = async (id) => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+        throw Error(data.error);
+    }
+
+    console.log(data);
+
+    return data;
+}
+
+export { deleteUser };

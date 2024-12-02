@@ -109,7 +109,7 @@ const updateApplication = async (application, location, userEmails) => {
         throw Error('All fields are required');
     }
 
-    const res = await fetch(`/api/applications/${application._id}`, {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/applications/update/${application._id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -127,5 +127,22 @@ const updateApplication = async (application, location, userEmails) => {
     return data;
 }
 
-export { getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication, getApplicationDetails };
+const addUserToApplication = async (applicationId, userId) => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/applications/addUser/${userId}/${applicationId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        }
+    });
 
+    const data = await res.json();
+
+    if(!res.ok){
+        throw Error(data.error);
+    }
+
+    return data;
+}
+
+export { getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication, getApplicationDetails, addUserToApplication };

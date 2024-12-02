@@ -1,5 +1,5 @@
 import express from 'express';
-import { addApplication, getApplicationsClient, getApplicationsAgent, getApplicationDetails, deleteApplication, updateApplication } from '../Controllers/leaseApplicationController.js';
+import { addApplication, getApplicationsClient, getApplicationsAgent, getApplicationDetails, deleteApplication, updateApplication, addUserToApplication } from '../Controllers/leaseApplicationController.js';
 import auth from '../Middlewares/auth.js';
 
 const router = express.Router();
@@ -20,7 +20,10 @@ router.post('/', auth, addApplication);
 //Delete an Application Route
 router.delete('/:id', auth, deleteApplication);
 
-//Update an Application Route
-router.put('/:id', auth, updateApplication);
+// Add user to application (more specific route)
+router.put('/addUser/:clientId/:applicationId', auth, addUserToApplication);
+
+// Update an application (generic route)
+router.put('update/:id', auth, updateApplication);
 
 export {router as leaseApplicationRoutes};

@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, loginUser, getUserInfo, getNewUserInfo, updateUserInfo, sendInvitationEmail } from '../Controllers/usersController.js';
+import { registerUser, loginUser, getUserInfo, getNewUserInfo, updateUserInfo, sendInvitationEmail, deleteUser } from '../Controllers/usersController.js';
 import auth from '../Middlewares/auth.js';
 
 const router = express.Router();
@@ -21,6 +21,9 @@ router.put('/info',auth, updateUserInfo);
 
 //Send Invitation Email Route
 router.post('/invite',auth, sendInvitationEmail);
+
+//Delete User Route
+router.delete('/delete/:id',auth, deleteUser);
 
 
 

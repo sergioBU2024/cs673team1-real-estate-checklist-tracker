@@ -202,4 +202,65 @@ const updateApplication = async (req, res) => {
     }
 }
 
-export {getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication, getApplicationDetails};
+
+// add user to application
+const addUserToApplication = async (req, res) => {
+    console.log('Adding User to Application');
+    const { clientId, applicationId } = req.params;
+
+    // Check if the ID is Valid
+    if (!mongoose.Types.ObjectId.isValid(applicationId)) {
+        return res.status(400).json({ error: 'Invalid ID' });
+    }
+
+    try {
+        // Check if the Application Exists
+        const application = await LeaseApplication.findById(applicationId);
+        if (!application) {
+            return res.status(404).json({ error: 'Application Not Found' });
+        }
+
+        console.log(1);
+        // Check if the User is the Owner of the Application
+        const user = await User.findById(req.user._id);
+        if (!application.agent.equals(user._id)) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        console.log(2);
+        // Find the user by id
+        const newUser = await User.findById(clientId);
+        if (!newUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        console.log(3);
+
+        // Check if the user is a client
+        if (newUser.role !== 'Client') {
+            return res.status(400).json({ error: 'User must be a client' });
+        }
+
+        console.log(4);
+
+        // Check if the user is already in the application
+        if (application.users.includes(newUser._id)) {
+            return res.status(400).json({ error: 'User already in the application' });
+        }
+
+        console.log(5);
+
+        // Add the user to the application
+        application.users.push(newUser._id);
+        await application.save();
+
+        res.status(200).json({ success: 'User added to the application', user: newUser });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
+export {getApplicationsClient, getApplicationsAgent, addApplication, deleteApplication, updateApplication, getApplicationDetails, addUserToApplication};

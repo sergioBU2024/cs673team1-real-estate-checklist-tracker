@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import 'dotenv/config.js';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
+import mongoose from 'mongoose';
 
 /***************************************** Creating JWT Token *****************************************/
 const createToken = (_id) => {
@@ -69,7 +70,7 @@ const loginUser = async (req, res) => {
         res.status(200).json({id: user._id, email, token, role: user.role, firstName: user.firstName, lastName: user.lastName }); 
     }
     catch(error){
-        console.log(err);
+        console.log(error);
         res.status(500).json({ error: error.message });
     }
 }
@@ -173,4 +174,28 @@ const sendInvitationEmail = async (req, res) => {
     }
 };
 
-export {registerUser, loginUser, getUserInfo, getNewUserInfo, updateUserInfo, sendInvitationEmail};
+
+const deleteUser = async (req, res) => {
+    //Check if the ID is Valid
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
+        return res.status(400).json({ error: 'Invalid ID' });
+    }
+
+    //Check if the User Exists
+    const user = await User.findById(req.params.id);
+    if(!user){
+        return res.status(404).json({ error: 'User Not Found' });
+    }
+
+    try{
+        await user.deleteOne();
+        res.status(200).json({ success: 'User Deleted' });
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+export {registerUser, loginUser, getUserInfo, getNewUserInfo, updateUserInfo, sendInvitationEmail, deleteUser};

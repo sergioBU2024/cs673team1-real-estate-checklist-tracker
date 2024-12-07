@@ -325,3 +325,14 @@ const TaskDetailsPage = () => {
             </>
           ) : (
             <Typography variant="body2" sx={{ color: "grey" }}>
+              Only clients can upload files in the pending phase. Agents can
+              approve or return submitted tasks.
+            </Typography>
+          )}
+        </CardActions>
+      </Card>
+    </Box>
+  );
+};
+
+export default TaskDetailsPage;

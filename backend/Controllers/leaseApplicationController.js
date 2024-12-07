@@ -133,7 +133,7 @@ const deleteApplication = async (req, res) => {
         return res.status(404).json({ error: 'Application Not Found' });
     }
 
-    console.log(application);
+    console.log(application.users);
 
     //Check if the User is the Owner of the Application
     const user = await User.findById(req.user._id);

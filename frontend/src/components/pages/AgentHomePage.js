@@ -135,12 +135,12 @@ const ApplicationCard = ({ application, onClick, progress }) => {
     handleDelete(application._id);
   }}
   sx={{
-    borderColor: 'gray', // Change outline color to gray
-    color: 'gray', // Change text color to gray
+    borderColor: 'gray',
+    color: 'gray',
     '&:hover': {
-      borderColor: '#555', // Darker gray on hover
-      color: '#555', // Darker gray text on hover
-      backgroundColor: 'transparent', // No background on hover
+      borderColor: '#555',
+      color: '#555',
+      backgroundColor: 'transparent',
     },
   }}
 >
@@ -272,10 +272,10 @@ const AgentHomePage = () => {
             variant="contained"
             onClick={handleAddClick}
            sx={{
-            backgroundColor: '#758783', // Button background color
-            textTransform: 'none', // Prevents uppercase text
+            backgroundColor: '#758783',
+            textTransform: 'none',
             '&:hover': {
-             backgroundColor: '#5c6b68', // Slightly darker color on hover
+             backgroundColor: '#5c6b68',
              },
            }}
            >

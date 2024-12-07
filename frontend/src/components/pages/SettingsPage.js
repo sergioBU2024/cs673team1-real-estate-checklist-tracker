@@ -177,16 +177,4 @@ const SettingsPage = () => {
               color: '#ffffff',
               '&:hover': {
                 backgroundColor: '#5c6b68',
-                },
-                }}
-          >
-              Save
-          </Button>
-
-        </Box>
-      </Paper>
-    </Box>
-  );
-};
-
-export default SettingsPage;
+           

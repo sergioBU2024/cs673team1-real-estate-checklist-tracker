@@ -90,11 +90,18 @@ const ApplicationCard = ({ application, onClick, progress }) => {
               {`${progress}%`}
             </Typography>
           </Box>
-          <LinearProgress 
-            variant="determinate" 
-            value={progress} 
-            sx={{ height: 8, borderRadius: 1 }}
-          />
+          <LinearProgress
+            variant="determinate"
+            value={progress}
+            sx={{
+             height: 8, // Set height of the progress bar
+             borderRadius: 1, // Round the edges
+             backgroundColor: '#e0e0e0', // Light gray for the track
+            '& .MuiLinearProgress-bar': {
+               backgroundColor: '#758783', // Gray for the progress bar
+               },
+             }}
+           />
         </Box>
       </CardContent>
     </Card>

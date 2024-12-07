@@ -30,6 +30,7 @@ function Header() {
 
   // Navigation handlers
   const handleSettings = () => navigate('/settings');
+  const handleLogoClick = () => navigate('/dashboard'); // Wha happens when user clicks on logo
   const handleLogout = () => {
     clearApplications();  // Clear applications on logout
     navigate('/');        // Redirect to the home page
@@ -37,7 +38,7 @@ function Header() {
 
   return (
     <header className="header">
-      <div className="logo-header">
+      <div className="logo-header" onClick={ handleLogoClick } style={{ cursor: 'pointer' }}>
         <img src="/logo.png" alt="RealList Logo" />
         <div className="logo-text">
           <h1>RealList</h1>

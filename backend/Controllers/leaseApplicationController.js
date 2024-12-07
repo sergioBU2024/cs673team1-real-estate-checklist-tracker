@@ -9,7 +9,8 @@ const getApplicationsClient = async (req, res) => {
         const applications = await LeaseApplication.find({
             users: { $in: [req.user._id] }
         })
-        .populate('agent', 'firstName lastName')  // Populate agent with just firstName and lastName
+        .populate('agent', 'firstName lastName')
+        .populate('users', 'firstName lastName')  // Populate agent with just firstName and lastName
         .exec();
         
         console.log(applications);
@@ -121,35 +122,46 @@ const addApplication = async (req, res) => {
 
 /**********************************************Delete Application *******************************************/
 const deleteApplication = async (req, res) => {
-
-    //Check if the ID is Valid
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-        return res.status(400).json({ error: 'Invalid ID' });
+    // Check if the ID is Valid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: 'Invalid ID' });
     }
-
-    //Check if the Application Exists
+  
+    // Check if the Application Exists
     const application = await LeaseApplication.findById(req.params.id);
-    if(!application){
-        return res.status(404).json({ error: 'Application Not Found' });
+    if (!application) {
+      return res.status(404).json({ error: 'Application Not Found' });
     }
-
+  
     console.log(application.users);
-
-    //Check if the User is the Owner of the Application
+  
+    // Check if the User is the Owner of the Application
     const user = await User.findById(req.user._id);
-    if(!application.agent.equals(user._id)){
-        return res.status(401).json({ error: 'Unauthorized' });
+    if (!application.agent.equals(user._id)) {
+      return res.status(401).json({ error: 'Unauthorized' });
     }
-
-    try{
-        await application.deleteOne();
-        res.status(200).json({ success: 'Application Deleted' });
+  
+    try {
+      // Delete all associated users
+      if (application.users && application.users.length > 0) {
+        for (const userId of application.users) {
+          if (mongoose.Types.ObjectId.isValid(userId)) {
+            await User.findByIdAndDelete(userId); // Deletes user by ID
+          } else {
+            console.log(`Invalid User ID: ${userId}`);
+          }
+        }
+      }
+  
+      // Delete the application
+      await application.deleteOne();
+      res.status(200).json({ success: 'Application and associated users deleted' });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: error.message });
     }
-    catch(error){
-        console.log(error);
-        res.status(500).json({ error: error.message });
-    }
-}
+  };
+  
 
 /**********************************************Update Application *******************************************/
 const updateApplication = async (req, res) => {

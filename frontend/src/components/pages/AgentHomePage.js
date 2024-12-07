@@ -28,7 +28,10 @@ import {
 } from '@mui/icons-material';
 
 const ApplicationCard = ({ application, onClick, progress }) => {
-  const { fetchApplications } = useContext(ApplicationsContext);
+
+  const navigate = useNavigate();
+
+
   const daysSinceCreation = Math.floor(
     (new Date() - new Date(application.createdAt)) / (1000 * 60 * 60 * 24)
   );
@@ -44,7 +47,7 @@ const ApplicationCard = ({ application, onClick, progress }) => {
     if (confirmDelete) {
       try {
         await deleteApplication(applicationId); // Replace with your API call
-        fetchApplications(getApplicationsAgent); // Refresh the application list
+        window.location.reload()// Refresh the application list
       } catch (error) {
         console.error("Error deleting application:", error);
       }
@@ -117,10 +120,16 @@ const ApplicationCard = ({ application, onClick, progress }) => {
           {/* <Button variant="outlined" color="secondary" onClick={onArchive}>
             Archive
           </Button> */}
-          <Button variant="outlined" color="error" 
-          onClick={() => handleDelete(application._id)}>
-            Delete
-          </Button>
+          <Button
+  variant="outlined"
+  color="error"
+  onClick={(event) => {
+    event.stopPropagation(); // Prevent the card's onClick from triggering
+    handleDelete(application._id);
+  }}
+>
+  Delete
+</Button>
         </Box>
       </CardContent>
     </Card>

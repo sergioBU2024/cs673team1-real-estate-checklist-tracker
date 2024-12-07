@@ -87,7 +87,7 @@ const addApplication = async (location, userIds) => {
 
 /**********************************************Delete Application *******************************************/
 const deleteApplication = async (_id) => {
-    const res = await fetch(`/api/applications/${_id}`, {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/applications/${_id}`, {
         method: 'DELETE',
         headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`,

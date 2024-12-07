@@ -218,13 +218,22 @@ const ApplicationDetailPage = () => {
               />
               <Box
                 sx={{ flex: 1, display: "flex", alignItems: "center", gap: 1 }}
-              >
+               >
                 <LinearProgress
-                  variant="determinate"
-                  value={appUser.progress}
-                  sx={{ height: 8, borderRadius: 1,width: "100%" }}
-                />
-              </Box>
+                 variant="determinate"
+                 value={appUser.progress}
+                 sx={{
+                   height: 8,
+                   borderRadius: 1,
+                   width: "100%",
+                   backgroundColor: '#e0e0e0',
+                   '& .MuiLinearProgress-bar': {
+                     backgroundColor: '#758783',
+                      },
+                  }}
+               />
+               </Box>
+
               {isAgent && (
                 <>
                   <Tooltip title="Delete User">
@@ -254,13 +263,21 @@ const ApplicationDetailPage = () => {
           ))}
         </List>
         {isAgent && (
-          <Button
-            variant="contained"
-            onClick={handleOpenInviteDialog}
-            startIcon={<Send />}
-          >
-            Add new User
-          </Button>
+         <Button
+         variant="contained"
+         onClick={handleOpenInviteDialog}
+         startIcon={<Send />}
+         sx={{
+           backgroundColor: '#758783',
+           color: 'white',
+           '&:hover': {
+             backgroundColor: '#5c6b68',
+           },
+         }}
+         >
+         Add new User
+         </Button>
+       
         )}
       </Container>
       <Dialog open={openInviteDialog} onClose={handleCloseInviteDialog}>
@@ -293,10 +310,31 @@ const ApplicationDetailPage = () => {
           {inviteError && <Alert severity="error">{inviteError}</Alert>}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseInviteDialog}>Cancel</Button>
-          <Button onClick={handleSendInvitation} color="primary">
+        <Button
+          onClick={handleCloseInviteDialog}
+          sx={{
+           color: '#758783', // Gray text color
+            '&:hover': {
+             color: '#5c6b68', // Darker gray on hover
+             backgroundColor: 'transparent', // No background on hover
+             },
+          }}
+         >
+           Cancel
+         </Button>
+         <Button
+           onClick={handleSendInvitation}
+           sx={{
+            backgroundColor: '#758783', // Gray background color
+            color: 'white', // White text for readability
+            '&:hover': {
+              backgroundColor: '#5c6b68', // Darker gray on hover
+             },
+           }}
+           >
             Send
-          </Button>
+           </Button>
+
         </DialogActions>
       </Dialog>
       <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>

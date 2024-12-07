@@ -313,10 +313,10 @@ const ApplicationDetailPage = () => {
         <Button
           onClick={handleCloseInviteDialog}
           sx={{
-           color: '#758783', // Gray text color
+           color: '#758783',
             '&:hover': {
-             color: '#5c6b68', // Darker gray on hover
-             backgroundColor: 'transparent', // No background on hover
+             color: '#5c6b68',
+             backgroundColor: 'transparent',
              },
           }}
          >
@@ -325,34 +325,4 @@ const ApplicationDetailPage = () => {
          <Button
            onClick={handleSendInvitation}
            sx={{
-            backgroundColor: '#758783', // Gray background color
-            color: 'white', // White text for readability
-            '&:hover': {
-              backgroundColor: '#5c6b68', // Darker gray on hover
-             },
-           }}
-           >
-            Send
-           </Button>
-
-        </DialogActions>
-      </Dialog>
-      <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this user?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
-          <Button onClick={handleDeleteUser} color="primary">
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
-  );
-};
-
-export default ApplicationDetailPage;
+            background

@@ -153,28 +153,36 @@ const SettingsPage = () => {
         />
 
         <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
-          <Button
-            variant="outlined"
-            onClick={handleClose}
-            sx={{
-              backgroundColor: '#cccccc',
-              color: '#333333',
-              '&:hover': { backgroundColor: '#b3b3b3' },
-            }}
-          >
-            Close
-          </Button>
-          <Button
+        <Button
+         variant="outlined"
+         onClick={handleClose}
+         sx={{
+           backgroundColor: 'transparent',
+           borderColor: '#758783',
+           color: '#758783',
+            '&:hover': {
+              backgroundColor: 'transparent',
+              borderColor: '#5c6b68',
+              color: '#5c6b68',
+              },
+           }}
+         >
+           Close
+         </Button>
+         <Button
             variant="contained"
             onClick={handleSave}
             sx={{
-              backgroundColor: '#5a5a5a',
+              backgroundColor: '#758783',
               color: '#ffffff',
-              '&:hover': { backgroundColor: '#4d4d4d' },
-            }}
+              '&:hover': {
+                backgroundColor: '#5c6b68',
+                },
+                }}
           >
-            Save
+              Save
           </Button>
+
         </Box>
       </Paper>
     </Box>

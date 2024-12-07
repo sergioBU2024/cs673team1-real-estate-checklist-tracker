@@ -142,9 +142,21 @@ const UserDetailPage = () => {
               </Select>
             </FormControl>
 
-            <Button variant="contained" onClick={handleAddTask} sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              onClick={handleAddTask}
+              sx={{
+                mt: 2,
+                backgroundColor: '#758783',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#5c6b68',
+                  },
+                }}
+             >
               Add Task
-            </Button>
+              </Button>
+
           </Box>
         )}
       </Box>

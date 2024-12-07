@@ -212,9 +212,19 @@ const TaskDetailsPage = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button variant="contained" color="primary">
+                <Button
+                 variant="contained"
+                 sx={{
+                   backgroundColor: '#758783',
+                   color: 'white',
+                    '&:hover': {
+                     backgroundColor: '#5c6b68',
+                     },
+                    }}
+                 >
                   View/Download File
                 </Button>
+
               </a>
             </Stack>
           ) : (

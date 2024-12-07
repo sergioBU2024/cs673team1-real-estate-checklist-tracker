@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { ApplicationsContext } from '../../contexts/ApplicationsContext';
-import { getApplicationsAgent } from '../../controllers/leaseApplicationsController'; // Updated controller
+import { getApplicationsAgent, deleteApplication } from '../../controllers/leaseApplicationsController'; // Updated controller
 import { getApplicationTasks } from '../../controllers/tasksController'; // Import getApplicationTasks
 import Header from '../Header';
 import { 
@@ -28,6 +28,7 @@ import {
 } from '@mui/icons-material';
 
 const ApplicationCard = ({ application, onClick, progress }) => {
+  const { fetchApplications } = useContext(ApplicationsContext);
   const daysSinceCreation = Math.floor(
     (new Date() - new Date(application.createdAt)) / (1000 * 60 * 60 * 24)
   );
@@ -36,6 +37,18 @@ const ApplicationCard = ({ application, onClick, progress }) => {
     if (daysSinceCreation === 0) return 'Today';
     if (daysSinceCreation === 1) return 'Yesterday';
     return `${daysSinceCreation} days ago`;
+  };
+
+  const handleDelete = async (applicationId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this application?");
+    if (confirmDelete) {
+      try {
+        await deleteApplication(applicationId); // Replace with your API call
+        fetchApplications(getApplicationsAgent); // Refresh the application list
+      } catch (error) {
+        console.error("Error deleting application:", error);
+      }
+    }
   };
 
   return (
@@ -98,6 +111,16 @@ const ApplicationCard = ({ application, onClick, progress }) => {
             value={progress} 
             sx={{ height: 8, borderRadius: 1 }}
           />
+        </Box>
+        {/* Action Buttons */}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1 }}>
+          {/* <Button variant="outlined" color="secondary" onClick={onArchive}>
+            Archive
+          </Button> */}
+          <Button variant="outlined" color="error" 
+          onClick={() => handleDelete(application._id)}>
+            Delete
+          </Button>
         </Box>
       </CardContent>
     </Card>
@@ -187,6 +210,18 @@ const AgentHomePage = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+  
+  // const handleArchive = async (applicationId) => {
+  //   const confirmArchive = window.confirm("Are you sure you want to archive this application?");
+    // if (confirmArchive) {
+    //   try {
+    //     await archiveApplication(applicationId); // Replace with your API call
+    //     fetchApplications(getApplicationsAgent); // Refresh the application list
+    //   } catch (error) {
+    //     console.error("Error archiving application:", error);
+    //   }
+    // }
+  // };
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
@@ -227,6 +262,7 @@ const AgentHomePage = () => {
                 key={app._id}
                 application={app}
                 onClick={() => handleApplicationClick(app._id)}
+                // onArchive={() => handleArchive(app._id)}
                 progress={progressData[app._id] || 0} // Display progress dynamically
               />
             ))

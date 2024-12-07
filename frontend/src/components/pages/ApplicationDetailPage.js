@@ -325,4 +325,55 @@ const ApplicationDetailPage = () => {
          <Button
            onClick={handleSendInvitation}
            sx={{
-            background
+            backgroundColor: '#758783',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#5c6b68',
+             },
+           }}
+           >
+            Send
+           </Button>
+
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this user?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button
+         onClick={handleCloseDeleteDialog}
+         sx={{
+          color: '#758783',
+          '&:hover': {
+            color: '#5c6b68',
+            backgroundColor: 'transparent',
+            },
+         }}
+        >
+          Cancel
+         </Button>
+     <Button
+  onClick={handleDeleteUser}
+  sx={{
+    backgroundColor: '#758783',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#5c6b68',
+    },
+  }}
+>
+  Delete
+</Button>
+
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
+};
+
+export default ApplicationDetailPage;

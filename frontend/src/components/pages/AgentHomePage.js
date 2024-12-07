@@ -163,11 +163,20 @@ const AgentHomePage = () => {
         const clientName = app.clientName?.toLowerCase() || ''; // Safely access clientName
         const location = app.location?.toLowerCase() || ''; // Safely access location
         const id = app._id?.toLowerCase() || ''; // Safely access ID
+
+        // Check if any user's first or last name matches the query
+      const userMatch = app.users?.some((user) => {
+        const firstName = user.firstName?.toLowerCase() || '';
+        const lastName = user.lastName?.toLowerCase() || '';
+        return `${firstName} ${lastName}`.includes(query); // Combine and check
+      });
+
   
         return (
           clientName.includes(query) ||
           location.includes(query) ||
-          id.includes(query)
+          id.includes(query) ||
+          userMatch
         );
       })
     );

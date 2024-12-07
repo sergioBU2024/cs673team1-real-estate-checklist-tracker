@@ -27,7 +27,8 @@ const getApplicationsAgent= async (req, res) => {
         const applications = await LeaseApplication.find({
             agent: { $in: [req.user._id] }
         })
-        .populate('agent', 'firstName lastName')  // Populate agent with just firstName and lastName
+        .populate('agent', 'firstName lastName') 
+        .populate('users', 'firstName lastName') // Populate agent with just firstName and lastName
         .exec();
         
         console.log(applications);

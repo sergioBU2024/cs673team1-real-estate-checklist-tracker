@@ -270,18 +270,22 @@ const TaskDetailsPage = () => {
                 Upload
               </Button>
               <Button
-                variant="contained"
-                onClick={handleSubmitTask}
-                sx={{
-                  bgcolor: "secondary.main",
-                  ":hover": { bgcolor: "secondary.dark" },
-                  px: 4,
-                  mt: 2,
-                }}
-                disabled={!task.fileUrl || task.status === "submitted"}
+              variant="contained"
+              onClick={handleSubmitTask}
+              sx={{
+               backgroundColor: '#758783',
+               color: 'white',
+               ':hover': {
+                  backgroundColor: '#5c6b68',
+                  },
+               px: 4,
+               mt: 2,
+               }}
+               disabled={!task.fileUrl || task.status === "submitted"}
               >
                 Submit Task
               </Button>
+
             </>
           ) : task.status === "submitted" ? (
             <>

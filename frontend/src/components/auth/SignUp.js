@@ -63,7 +63,7 @@ function SignUp() {
       </div>
       <div className="signup-right">
         <h1>Sign Up as Agent</h1>
-        <p>Already have an account? <a href="/login">Log In</a></p>
+        <p>Already have an account? <a href="/">Log In</a></p>
         <form onSubmit={handleSubmit}>
 
           <div className="form-group">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -24,6 +24,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 const TaskDetailsPage = () => {
   const { taskId } = useParams();
+  const navigate = useNavigate();
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -333,6 +334,14 @@ const TaskDetailsPage = () => {
               approve or return submitted tasks.
             </Typography>
           )}
+                {/* Back Button */}
+      <Button
+        variant="outlined"
+        onClick={() => navigate(-1)} // Navigate to the previous page
+        sx={{ mb: 2 }}
+      >
+        Back
+      </Button>
         </CardActions>
       </Card>
     </Box>

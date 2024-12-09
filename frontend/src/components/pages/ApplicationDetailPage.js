@@ -201,7 +201,7 @@ const ApplicationDetailPage = () => {
           </CardContent>
         </Card>
         <Typography variant="h5" gutterBottom>
-          Users
+          Clients:
         </Typography>
         <List>
           {application.users.map((appUser) => (
@@ -275,7 +275,7 @@ const ApplicationDetailPage = () => {
            },
          }}
          >
-         Add new User
+         Add new client
          </Button>
        
         )}

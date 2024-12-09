@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -24,6 +24,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 const TaskDetailsPage = () => {
   const { taskId } = useParams();
+  const navigate = useNavigate();
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -202,18 +203,46 @@ const TaskDetailsPage = () => {
           </Typography>
 
           {downloadUrl ? (
-            <Stack spacing={2} alignItems="center" sx={{ mt: 2 }}>
-              <Typography variant="body2" sx={{ color: "green" }}>
-                A file has already been uploaded.
-              </Typography>
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 2 }}>
+              {/* View File Button */}
+              <a
+                href={downloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#758783",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "#5c6b68",
+                    },
+                  }}
+                >
+                  View File
+                </Button>
+              </a>
+
+              {/* Download File Button */}
               <a
                 href={downloadUrl}
                 download={`task-${taskId}-file`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button variant="contained" color="primary">
-                  View/Download File
+                <Button
+                  variant="outlined"
+                  sx={{
+                    color: "#758783",
+                    borderColor: "#758783",
+                    "&:hover": {
+                      backgroundColor: "#e6e6e6",
+                      borderColor: "#5c6b68",
+                    },
+                  }}
+                >
+                  Download File
                 </Button>
               </a>
             </Stack>
@@ -260,18 +289,22 @@ const TaskDetailsPage = () => {
                 Upload
               </Button>
               <Button
-                variant="contained"
-                onClick={handleSubmitTask}
-                sx={{
-                  bgcolor: "secondary.main",
-                  ":hover": { bgcolor: "secondary.dark" },
-                  px: 4,
-                  mt: 2,
-                }}
-                disabled={!task.fileUrl || task.status === "submitted"}
+              variant="contained"
+              onClick={handleSubmitTask}
+              sx={{
+               backgroundColor: '#758783',
+               color: 'white',
+               ':hover': {
+                  backgroundColor: '#5c6b68',
+                  },
+               px: 4,
+               mt: 2,
+               }}
+               disabled={!task.fileUrl || task.status === "submitted"}
               >
                 Submit Task
               </Button>
+
             </>
           ) : task.status === "submitted" ? (
             <>
@@ -319,6 +352,14 @@ const TaskDetailsPage = () => {
               approve or return submitted tasks.
             </Typography>
           )}
+                {/* Back Button */}
+      <Button
+        variant="outlined"
+        onClick={() => navigate(-1)} // Navigate to the previous page
+        sx={{ mb: 2 }}
+      >
+        Back
+      </Button>
         </CardActions>
       </Card>
     </Box>

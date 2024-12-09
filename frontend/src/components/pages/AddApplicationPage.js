@@ -209,13 +209,29 @@ const AddApplicationPage = () => {
 
           {/* Save and Cancel Buttons */}
           <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
-            <Button variant="contained" color="primary" onClick={handleSaveApplication}>
-              Add & Invite Applicants
+           <Button
+            variant="contained"
+            onClick={handleSaveApplication}
+            sx={{ backgroundColor: '#758783', '&:hover': { backgroundColor: '#5c6b68' } }}
+            >
+            Add & Invite Applicants
             </Button>
-            <Button variant="outlined" color="secondary" onClick={handleClose}>
-              Cancel
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleClose}
+              sx={{
+              color: '#758783',
+              borderColor: '#758783',
+              '&:hover': {
+              borderColor: '#5c6b68',
+              color: '#5c6b68',
+              },
+              }}
+            >
+               Cancel
             </Button>
-          </Box>
+         </Box>
         </Paper>
       </Container>
     </Box>

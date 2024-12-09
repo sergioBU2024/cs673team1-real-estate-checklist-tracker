@@ -201,7 +201,7 @@ const ApplicationDetailPage = () => {
           </CardContent>
         </Card>
         <Typography variant="h5" gutterBottom>
-          Users
+          Clients:
         </Typography>
         <List>
           {application.users.map((appUser) => (
@@ -218,13 +218,22 @@ const ApplicationDetailPage = () => {
               />
               <Box
                 sx={{ flex: 1, display: "flex", alignItems: "center", gap: 1 }}
-              >
+               >
                 <LinearProgress
-                  variant="determinate"
-                  value={appUser.progress}
-                  sx={{ height: 8, borderRadius: 1,width: "100%" }}
-                />
-              </Box>
+                 variant="determinate"
+                 value={appUser.progress}
+                 sx={{
+                   height: 8,
+                   borderRadius: 1,
+                   width: "100%",
+                   backgroundColor: '#e0e0e0',
+                   '& .MuiLinearProgress-bar': {
+                     backgroundColor: '#758783',
+                      },
+                  }}
+               />
+               </Box>
+
               {isAgent && (
                 <>
                   <Tooltip title="Delete User">
@@ -254,13 +263,21 @@ const ApplicationDetailPage = () => {
           ))}
         </List>
         {isAgent && (
-          <Button
-            variant="contained"
-            onClick={handleOpenInviteDialog}
-            startIcon={<Send />}
-          >
-            Add new User
-          </Button>
+         <Button
+         variant="contained"
+         onClick={handleOpenInviteDialog}
+         startIcon={<Send />}
+         sx={{
+           backgroundColor: '#758783',
+           color: 'white',
+           '&:hover': {
+             backgroundColor: '#5c6b68',
+           },
+         }}
+         >
+         Add new client
+         </Button>
+       
         )}
       </Container>
       <Dialog open={openInviteDialog} onClose={handleCloseInviteDialog}>
@@ -293,10 +310,31 @@ const ApplicationDetailPage = () => {
           {inviteError && <Alert severity="error">{inviteError}</Alert>}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseInviteDialog}>Cancel</Button>
-          <Button onClick={handleSendInvitation} color="primary">
+        <Button
+          onClick={handleCloseInviteDialog}
+          sx={{
+           color: '#758783',
+            '&:hover': {
+             color: '#5c6b68',
+             backgroundColor: 'transparent',
+             },
+          }}
+         >
+           Cancel
+         </Button>
+         <Button
+           onClick={handleSendInvitation}
+           sx={{
+            backgroundColor: '#758783',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#5c6b68',
+             },
+           }}
+           >
             Send
-          </Button>
+           </Button>
+
         </DialogActions>
       </Dialog>
       <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
@@ -307,10 +345,31 @@ const ApplicationDetailPage = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
-          <Button onClick={handleDeleteUser} color="primary">
-            Delete
-          </Button>
+        <Button
+         onClick={handleCloseDeleteDialog}
+         sx={{
+          color: '#758783',
+          '&:hover': {
+            color: '#5c6b68',
+            backgroundColor: 'transparent',
+            },
+         }}
+        >
+          Cancel
+         </Button>
+     <Button
+  onClick={handleDeleteUser}
+  sx={{
+    backgroundColor: '#758783',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#5c6b68',
+    },
+  }}
+>
+  Delete
+</Button>
+
         </DialogActions>
       </Dialog>
     </Box>

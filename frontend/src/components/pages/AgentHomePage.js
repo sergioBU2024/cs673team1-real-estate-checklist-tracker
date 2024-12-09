@@ -107,27 +107,45 @@ const ApplicationCard = ({ application, onClick, progress }) => {
               {`${progress}%`}
             </Typography>
           </Box>
-          <LinearProgress 
-            variant="determinate" 
-            value={progress} 
-            sx={{ height: 8, borderRadius: 1 }}
-          />
+          <LinearProgress
+            variant="determinate"
+            value={progress}
+           sx={{
+           height: 8,
+           borderRadius: 1,
+           backgroundColor: '#e0e0e0', // Adjust the track (background) color
+           '& .MuiLinearProgress-bar': {
+            backgroundColor: '#758783', // Set the progress bar color
+            },
+           }}
+         />
         </Box>
         {/* Action Buttons */}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1 }}>
           {/* <Button variant="outlined" color="secondary" onClick={onArchive}>
             Archive
           </Button> */}
-          <Button
+         <Button
   variant="outlined"
-  color="error"
+  color="error" // Retaining error for logic but overriding the colors
   onClick={(event) => {
     event.stopPropagation(); // Prevent the card's onClick from triggering
     handleDelete(application._id);
   }}
+  sx={{
+    borderColor: 'gray',
+    color: 'gray',
+    '&:hover': {
+      borderColor: '#555',
+      color: '#555',
+      backgroundColor: 'transparent',
+    },
+  }}
 >
   Delete
 </Button>
+
+
         </Box>
       </CardContent>
     </Card>
@@ -248,9 +266,19 @@ const AgentHomePage = () => {
           <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold' }}>
             Your Applications
           </Typography>
-          <Button variant="contained" color="primary" onClick={handleAddClick} sx={{ textTransform: 'none' }}>
-            Add
-          </Button>
+          <Button
+            variant="contained"
+            onClick={handleAddClick}
+           sx={{
+            backgroundColor: '#758783',
+            textTransform: 'none',
+            '&:hover': {
+             backgroundColor: '#5c6b68',
+             },
+           }}
+           >
+             Add
+           </Button>
         </Box>
 
         <TextField

@@ -32,7 +32,7 @@ const UserDetailPage = () => {
         const userDetails = await getNewUserInfo(userId); // Fetch user details
         setUserName(userDetails.firstName + " " + userDetails.lastName); // Set the user's full name
         setUserEmail(userDetails.email);
-        setUserPhone(userDetails.phone)
+        setUserPhone(userDetails.phoneNumber)
       } catch (err) {
         setError('Failed to load user details.');
       }

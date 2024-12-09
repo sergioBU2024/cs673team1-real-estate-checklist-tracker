@@ -114,10 +114,8 @@ const updateUserInfo = async (req, res) => {
         user.lastName = lastName || user.lastName;
         
         // If user is an agent, check and update office location
-        if (user.role === 'Agent') {
             user.officeLocation = officeLocation || user.officeLocation;
             user.phoneNumber = phoneNumber || user.phoneNumber;
-        }
 
         // If a new password is provided, hash it and update
         if (password) {

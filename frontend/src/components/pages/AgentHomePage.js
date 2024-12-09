@@ -29,8 +29,6 @@ import {
 
 const ApplicationCard = ({ application, onClick, progress }) => {
 
-  const navigate = useNavigate();
-
 
   const daysSinceCreation = Math.floor(
     (new Date() - new Date(application.createdAt)) / (1000 * 60 * 60 * 24)

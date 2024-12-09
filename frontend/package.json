@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "country-state-city": "^3.2.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "nodemailer": "^6.9.15",
@@ -20,6 +21,8 @@
     "react-router": "^6.27.0",
     "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
+    "react-select": "^5.8.3",
+    "us-state-codes": "^1.1.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
-import { Box, Typography, Container, Paper, TextField, Button, MenuItem } from '@mui/material';
+import { Box, Typography, Container, Paper, TextField, Button, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import { registerUser, sendInvitationEmail } from '../../controllers/usersController';
 import { addApplication } from '../../controllers/leaseApplicationsController';
+import { State, City } from 'country-state-city';
 
 const AddApplicationPage = () => {
   const navigate = useNavigate();
@@ -11,16 +12,31 @@ const AddApplicationPage = () => {
     street: '',
     city: '',
     state: '',
-    zip: ''
+    zip: '',
+    country: 'US', // Set the default country to United States (US)
   });
   const [numApplicants, setNumApplicants] = useState(1);
   const [applicants, setApplicants] = useState([{ firstName: '', lastName: '', email: '' }]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    // Only fetch states for the United States
+    const allStates = State.getStatesOfCountry('US');
+    setStates(allStates);
+  }, []);
 
   const handleAddressChange = (field, value) => {
     setAddress((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
+
+    // Update cities when state is changed
+    if (field === 'state') {
+      const selectedCities = City.getCitiesOfState(address.country, value);
+      setCities(selectedCities);
+    }
   };
 
   const handleNumApplicantsChange = (e) => {
@@ -65,8 +81,6 @@ const AddApplicationPage = () => {
       // Create the application with the user IDs
       const applicationResponse = await addApplication(applicationData.location, userIds);
       console.log('Application Saved:', applicationResponse.data);
-      
-      
 
       // Navigate to the dashboard
       navigate('/dashboard');
@@ -99,31 +113,51 @@ const AddApplicationPage = () => {
             onChange={(e) => handleAddressChange('street', e.target.value)}
           />
           <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+            {/* Country set to United States */}
             <TextField
               fullWidth
-              label="City"
-              margin="normal"
+              label="Country"
               variant="outlined"
-              value={address.city}
-              onChange={(e) => handleAddressChange('city', e.target.value)}
+              margin='normal'
+              value="United States"
+              disabled
             />
-            <TextField
-              fullWidth
-              label="State"
-              margin="normal"
-              variant="outlined"
-              value={address.state}
-              onChange={(e) => handleAddressChange('state', e.target.value)}
-            />
-            <TextField
-              fullWidth
-              label="ZIP Code"
-              margin="normal"
-              variant="outlined"
-              value={address.zip}
-              onChange={(e) => handleAddressChange('zip', e.target.value)}
-            />
-          </Box>
+
+            {/* State Dropdown */}
+            <FormControl fullWidth variant="outlined" margin="normal">
+              <InputLabel>State</InputLabel>
+              <Select
+                value={address.state}
+                onChange={(e) => handleAddressChange('state', e.target.value)}
+                label="State"
+              >
+                {states.map((state) => (
+                  <MenuItem key={state.isoCode} value={state.isoCode}>
+                    {state.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          
+          
+          {/* City input field */}
+          <TextField
+            fullWidth
+            label="City"
+            margin="normal"
+            variant="outlined"
+            value={address.city}
+            onChange={(e) => handleAddressChange('city', e.target.value)}
+          />
+
+          <TextField
+            fullWidth
+            label="ZIP Code"
+            margin="normal"
+            variant="outlined"
+            value={address.zip}
+            onChange={(e) => handleAddressChange('zip', e.target.value)}
+          />
 
           {/* Number of Applicants Dropdown */}
           <TextField
@@ -141,6 +175,7 @@ const AddApplicationPage = () => {
               </MenuItem>
             ))}
           </TextField>
+          </Box>
 
           {/* Dynamic Applicant Fields */}
           {applicants.map((applicant, index) => (

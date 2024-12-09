@@ -13,6 +13,9 @@ const UserDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userPhone, setUserPhone] = useState('');
+
 
   // For creating new tasks
   const [newTask, setNewTask] = useState({
@@ -28,6 +31,8 @@ const UserDetailPage = () => {
       try {
         const userDetails = await getNewUserInfo(userId); // Fetch user details
         setUserName(userDetails.firstName + " " + userDetails.lastName); // Set the user's full name
+        setUserEmail(userDetails.email);
+        setUserPhone(userDetails.phone)
       } catch (err) {
         setError('Failed to load user details.');
       }
@@ -91,6 +96,16 @@ const UserDetailPage = () => {
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
       <Header />
       <Box sx={{ p: 4 }}>
+        
+        {/* Client Details Section */}
+        {user.role !== 'Client' && (
+        <Box sx={{ mb: 4, p: 2, border: '1px solid grey', borderRadius: 2, bgcolor: 'white' }}>
+          <Typography variant="h6">Client Details</Typography>
+          <Typography>Name: {userName}</Typography>
+          <Typography>Email: {userEmail}</Typography>
+          <Typography>Phone: {userPhone}</Typography>
+        </Box>
+        )}
         <Typography variant="h4">{`${userName}'s tasks`}</Typography> {/* Display user's name here */}
         <List>
           {tasks.map((task) => (

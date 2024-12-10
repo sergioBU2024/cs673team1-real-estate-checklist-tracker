@@ -1,0 +1,111 @@
+/* General Page Styling */
+.user-detail-page .main-container {
+    min-height: 100vh;
+    background-color: #f9f9f9;
+  }
+  
+  .user-detail-page .content-container {
+    padding: 16px;
+  }
+  
+  /* Module Styling */
+  .user-detail-page .module-container {
+    padding: 24px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .user-detail-page .module-heading {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  /* Client Details Styling */
+  .user-detail-page .client-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .user-detail-page .client-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333333;
+  }
+  
+  .user-detail-page .client-info {
+    font-size: 14px;
+    color: #555555;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Task List Styling */
+  .user-detail-page .task-item {
+    margin: 10px auto;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .user-detail-page .task-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .user-detail-page .task-title {
+    font-weight: 500;
+    color: #333333;
+  }
+  
+  .user-detail-page .task-status {
+    font-weight: bold;
+  }
+  
+  .user-detail-page .status-completed {
+    color: green;
+  }
+  
+  .user-detail-page .status-submitted {
+    color: orange;
+  }
+  
+  .user-detail-page .status-pending {
+    color: red;
+  }
+  
+  /* Assign New Task Styling */
+  .user-detail-page .form-field {
+    margin-bottom: 16px;
+  }
+  
+  .user-detail-page .form-field.large {
+    height: 80px; /* Increase height for larger fields */
+  }
+  
+  .user-detail-page .add-task-button {
+    margin-top: 16px;
+    background-color: #758783;
+    color: white;
+  }
+  
+  .user-detail-page .add-task-button:hover {
+    background-color: #5c6b68;
+  }
+  
+  .user-detail-page .loading-container,
+  .user-detail-page .error-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

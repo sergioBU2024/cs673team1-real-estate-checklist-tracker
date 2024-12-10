@@ -161,7 +161,7 @@ const sendInvitationEmail = async (req, res) => {
         from: process.env.EMAIL_USER,
         to: email,
         subject: 'You\'ve been invited to apply for a lease!',
-        text: `Hello ${firstName},\n\nYou have been invited to apply for a lease. Please follow the instructions on our platform to complete your application.\n\nhttp://localhost:3000/signupnew/${id}\n\nBest regards,\nThe Lease Application Team`
+        text: `Hello ${firstName},\n\nYou have been invited to apply for a lease. Please follow the instructions on our platform to complete your application.\n\n${process.env.FRONTEND_URL}/signupnew/${id}\n\nBest regards,\nThe Lease Application Team`
     };
 
     try {
